@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedEase - Patient Profile</title>
+
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <style>
+    /* ================= RESET & VARIABLES ================= */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    :root {
+      --primary-blue: #1d4ed8;
+      --accent-blue: #2563eb;
+      --bg-body: #f8fafc;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --card-bg: #ffffff;
+      --navy-card: #142a5c;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ================= TOP PROMO BAR ================= */
+    .top-promo-bar {
+      background-color: #173a8a;
+      color: #ffffff;
+      padding: 8px 32px;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .promo-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .promo-tag {
+      background-color: rgba(255, 255, 255, 0.2);
+      font-weight: 700;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .promo-left .coupon {
+      color: #facc15;
+      font-weight: 700;
+    }
+
+    .promo-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 12px;
+    }
+
+    /* ================= NAVBAR ================= */
+    .navbar {
+      background-color: #ffffff;
+      padding: 12px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      gap: 16px;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .brand-logo-icon {
+      background-color: #e0e7ff;
+      color: #2563eb;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .brand-text h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #1e3a8a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-text .sub-badge {
+      font-size: 10px;
+      background: #eff6ff;
+      color: var(--accent-blue);
+      padding: 2px 6px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    .brand-text p {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .nav-item {
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .nav-item:hover {
+      background-color: #f1f5f9;
+      color: var(--text-main);
+    }
+
+    .nav-item.active {
+      background-color: #eff6ff;
+      color: var(--accent-blue);
+      border: 1px solid #bfdbfe;
+    }
+
+    .badge-count {
+      background-color: var(--accent-blue);
+      color: white;
+      font-size: 10px;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 13px;
+    }
+
+    .search-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      font-size: 13px;
+      padding-left: 8px;
+      width: 130px;
+    }
+
+    .user-profile-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 4px 8px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+
+    .user-profile-header:hover {
+      background-color: #f1f5f9;
+    }
+
+    .user-profile-header img {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .user-profile-header .user-name {
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    .user-profile-header .user-role {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .btn-book {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-book:hover {
+      background-color: #1d4ed8;
+    }
+
+    /* ================= MAIN CONTENT ================= */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    /* --- 1. Patient Header Card --- */
+    .patient-header-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .patient-profile-info {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .patient-avatar-box {
+      width: 78px;
+      height: 78px;
+      border-radius: 20px;
+      overflow: hidden;
+      background-color: #e0e7ff;
+      flex-shrink: 0;
+    }
+
+    .patient-avatar-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .patient-details-text .name-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .patient-details-text h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .verified-pill {
+      background-color: #eff6ff;
+      color: #2563eb;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 14px;
+      border: 1px solid #bfdbfe;
+    }
+
+    .contact-line {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 3px;
+    }
+
+    .address-line {
+      font-size: 12px;
+      color: #94a3b8;
+    }
+
+    .btn-edit-profile {
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      padding: 9px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-edit-profile:hover {
+      background-color: #f8fafc;
+      border-color: #94a3b8;
+    }
+
+    /* --- 2. Vitals / Metrics Row --- */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .metric-card {
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 120px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .metric-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .metric-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 6px 0 2px;
+    }
+
+    .metric-value.blood-type {
+      color: #e11d48;
+      font-size: 24px;
+    }
+
+    .metric-value.consult-count {
+      color: #2563eb;
+      font-size: 24px;
+    }
+
+    .metric-sub {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .metric-link {
+      color: #2563eb;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-block;
+      margin-top: 4px;
+    }
+
+    .metric-link:hover {
+      text-decoration: underline;
+    }
+
+    .appointments-section {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 22px 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .appointments-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .appointments-heading h2 {
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .appointment-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .appointment-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+    }
+
+    .appointment-doctor {
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .appointment-details {
+      margin-top: 4px;
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .appointment-status {
+      flex: 0 0 auto;
+      padding: 5px 10px;
+      border-radius: 20px;
+      background: #dcfce7;
+      color: #15803d;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .appointments-empty,
+    .appointments-error {
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .appointments-error {
+      color: #b91c1c;
+    }
+
+    .profile-dialog { width:min(680px,calc(100% - 24px)); max-height:calc(100% - 24px); margin:auto; padding:0; overflow-y:auto; border:0; border-radius:18px; box-shadow:0 24px 80px #0f172a35; color:var(--text-main); }
+    .profile-dialog::backdrop { background:#0f172a99; backdrop-filter:blur(3px); }
+    .profile-editor { padding:26px; }
+    .profile-editor-header { display:flex; justify-content:space-between; align-items:flex-start; gap:16px; margin-bottom:20px; }
+    .profile-editor-header h2 { font-size:20px; }
+    .profile-editor-header p { color:var(--text-muted); font-size:12px; margin-top:4px; }
+    .profile-dialog-close { border:0; background:#f1f5f9; border-radius:8px; width:34px; height:34px; cursor:pointer; font-size:20px; color:#475569; }
+    .profile-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .profile-field { display:grid; gap:6px; }
+    .profile-field.full { grid-column:1/-1; }
+    .profile-field label { font-size:12px; font-weight:700; }
+    .profile-field input,.profile-field textarea { width:100%; padding:10px 11px; border:1px solid var(--border-color); border-radius:9px; font:inherit; font-size:13px; }
+    .profile-field textarea { resize:vertical; min-height:64px; }
+    .profile-field input:focus,.profile-field textarea:focus { outline:3px solid #dbeafe; border-color:#60a5fa; }
+    .profile-form-actions { display:flex; justify-content:flex-end; gap:10px; margin-top:20px; }
+    .profile-form-actions button { border:0; border-radius:9px; padding:10px 15px; font-family:inherit; font-size:12px; font-weight:700; cursor:pointer; }
+    .profile-cancel { background:#f1f5f9; color:#334155; }
+    .profile-save { background:#2563eb; color:white; }
+    .profile-feedback { color:#b91c1c; font-size:12px; min-height:18px; margin-top:8px; }
+    @media(max-width:600px) { .profile-editor { padding:20px; } .profile-form-grid { grid-template-columns:1fr; } .profile-field.full { grid-column:auto; } }
+
+    /* --- 3. Allergies & Insurance Row --- */
+    .two-col-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .allergies-card {
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 22px 24px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .allergies-card-header {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .allergies-card-header i {
+      color: #f59e0b;
+    }
+
+    .allergies-group-label {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .pill-tags-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .allergy-pill {
+      background-color: #fff7ed;
+      border: 1px solid #ffedd5;
+      color: #c2410c;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .allergy-pill i {
+      font-size: 11px;
+    }
+
+    .condition-pill {
+      background-color: #eff6ff;
+      border: 1px solid #dbeafe;
+      color: #1d4ed8;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .insurance-card {
+      background: linear-gradient(135deg, #102a6b 0%, #173b88 100%);
+      color: #ffffff;
+      border-radius: 16px;
+      padding: 22px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(16, 42, 107, 0.2);
+    }
+
+    .insurance-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .insurance-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #93c5fd;
+      margin-bottom: 4px;
+    }
+
+    .insurance-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .insurance-shield {
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      color: #38bdf8;
+    }
+
+    .insurance-details {
+      margin-bottom: 18px;
+    }
+
+    .insurance-id {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .insurance-plan {
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-top: 2px;
+    }
+
+    .insurance-footer {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #94a3b8;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      padding-top: 10px;
+    }
+
+    /* --- 4. Emergency Contact Card --- */
+    .emergency-card {
+      background-color: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .emergency-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .emergency-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background-color: #fef2f2;
+      color: #ef4444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .emergency-title {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .emergency-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .emergency-phone {
+      font-size: 12px;
+      color: #64748b;
+    }
+
+    .btn-call-contact {
+      background-color: #334155;
+      color: #ffffff;
+      border: none;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-call-contact:hover {
+      background-color: #1e293b;
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      background-color: #0b1528;
+      color: #94a3b8;
+      padding: 48px 32px 30px;
+      margin-top: 40px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1.2fr 1.2fr 1.5fr;
+      gap: 36px;
+    }
+
+    .footer-brand h3 {
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      margin-bottom: 14px;
+    }
+
+    .footer-brand p {
+      font-size: 13px;
+      line-height: 1.6;
+      max-width: 320px;
+      margin-bottom: 18px;
+    }
+
+    .footer-security-badges {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .sec-badge {
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      font-size: 11px;
+      color: #cbd5e1;
+      padding: 5px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-col h4 {
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 16px;
+    }
+
+    .footer-col ul {
+      list-style: none;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .footer-col ul li a {
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+
+    .footer-col ul li a:hover {
+      color: #ffffff;
+    }
+
+    .support-info-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .support-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .support-item i {
+      color: #38bdf8;
+      margin-top: 3px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .navbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .two-col-grid {
+        grid-template-columns: 1fr;
+      }
+      .footer-container {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  
+  <!-- Main Patient Profile Content -->
+  <main class="main-container">
+
+    <!-- 1. Patient Profile Header Card -->
+    <section class="patient-header-card">
+      <div class="patient-profile-info">
+        <div class="patient-avatar-box">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=250" alt="Sarah Miller" />
+        </div>
+        <div class="patient-details-text">
+          <div class="name-row">
+            <h1 id="profileName">Sarah Miller</h1>
+            <span class="verified-pill">Verified Patient</span>
+          </div>
+          <div class="contact-line">
+            <span id="profileEmail">sarah.miller@example.com</span> &bull; <span id="profilePhone">+1 (555) 234-8901</span>
+          </div>
+          <div class="address-line">
+            <span id="profileAddress">742 Park Avenue, Apt 6B, New York, NY</span>
+          </div>
+        </div>
+      </div>
+      <button class="btn-edit-profile" onclick="editProfile()">
+        <i class="fa-solid fa-pen"></i> Edit Medical Profile
+      </button>
+    </section>
+
+    <dialog class="profile-dialog" id="profileDialog" aria-labelledby="profileEditorTitle">
+      <form class="profile-editor" id="profileEditorForm">
+        <div class="profile-editor-header">
+          <div><h2 id="profileEditorTitle">Edit patient profile</h2><p>Update your contact and medical details.</p></div>
+          <button class="profile-dialog-close" type="button" onclick="closeProfileEditor()" aria-label="Close profile editor">&times;</button>
+        </div>
+        <div class="profile-form-grid">
+          <div class="profile-field"><label for="editProfileName">Full name</label><input id="editProfileName" required maxlength="80" /></div>
+          <div class="profile-field"><label for="editProfileEmail">Email address</label><input id="editProfileEmail" type="email" required maxlength="120" /></div>
+          <div class="profile-field"><label for="editProfilePhone">Phone number</label><input id="editProfilePhone" type="tel" required maxlength="32" /></div>
+          <div class="profile-field"><label for="editBloodType">Blood type</label><input id="editBloodType" maxlength="12" /></div>
+          <div class="profile-field full"><label for="editProfileAddress">Address</label><input id="editProfileAddress" maxlength="180" /></div>
+          <div class="profile-field"><label for="editHeight">Height</label><input id="editHeight" maxlength="32" /></div>
+          <div class="profile-field"><label for="editWeight">Weight</label><input id="editWeight" maxlength="32" /></div>
+          <div class="profile-field full"><label for="editAllergies">Allergies</label><textarea id="editAllergies" placeholder="Separate items with commas"></textarea></div>
+          <div class="profile-field full"><label for="editConditions">Ongoing conditions</label><textarea id="editConditions" placeholder="Separate items with commas"></textarea></div>
+        </div>
+        <p class="profile-feedback" id="profileFeedback" aria-live="polite"></p>
+        <div class="profile-form-actions"><button class="profile-cancel" type="button" onclick="closeProfileEditor()">Cancel</button><button class="profile-save" type="submit">Save changes</button></div>
+      </form>
+    </dialog>
+
+    <!-- 2. Vitals / Medical Stats Grid -->
+    <section class="metrics-grid">
+      <!-- Blood Type -->
+      <div class="metric-card">
+        <span class="metric-title">Blood Type</span>
+        <div class="metric-value blood-type" id="profileBloodType">O+</div>
+        <span class="metric-sub">Universal Compatible</span>
+      </div>
+
+      <!-- Height -->
+      <div class="metric-card">
+        <span class="metric-title">Height</span>
+        <div class="metric-value" id="profileHeight">5 ft 6 in (168 cm)</div>
+        <span class="metric-sub">Recorded Metric</span>
+      </div>
+
+      <!-- Weight -->
+      <div class="metric-card">
+        <span class="metric-title">Weight</span>
+        <div class="metric-value" id="profileWeight">132 lbs (60 kg)</div>
+        <span class="metric-sub">Normal BMI</span>
+      </div>
+
+      <!-- Consultations -->
+      <div class="metric-card">
+        <span class="metric-title">Consultations</span>
+        <div class="metric-value consult-count">3</div>
+        <a href="./patient.html" class="metric-link">View Records &rarr;</a>
+      </div>
+    </section>
+
+    <section class="appointments-section" aria-labelledby="appointmentsTitle">
+      <div class="appointments-heading">
+        <h2 id="appointmentsTitle">My Appointments</h2>
+        <a class="metric-link" href="./appointment.html">Book an appointment &rarr;</a>
+      </div>
+      <div class="appointment-list" id="appointmentList" aria-live="polite">
+        <p class="appointments-empty">Loading appointments...</p>
+      </div>
+    </section>
+
+    <!-- 3. Allergies & Insurance Row -->
+    <section class="two-col-grid">
+      
+      <!-- Allergies & Contraindications -->
+      <div class="allergies-card">
+        <div class="allergies-card-header">
+          <i class="fa-solid fa-triangle-exclamation"></i> Allergies &amp; Contraindications
+        </div>
+        
+        <div class="allergies-group-label">Known Drug &amp; Environmental Allergies:</div>
+        <div class="pill-tags-row" id="profileAllergies">
+          <span class="allergy-pill"><i class="fa-solid fa-triangle-exclamation"></i> Penicillin</span>
+          <span class="allergy-pill"><i class="fa-solid fa-triangle-exclamation"></i> Peanuts</span>
+        </div>
+
+        <div class="allergies-group-label">Chronic Medical Conditions:</div>
+        <div id="profileConditions">
+          <span class="condition-pill"><i class="fa-solid fa-heart-pulse"></i> Mild Asthma (Exercise-induced)</span>
+        </div>
+      </div>
+
+      <!-- Primary Medical Insurance -->
+      <div class="insurance-card">
+        <div>
+          <div class="insurance-header">
+            <div>
+              <div class="insurance-tag">Primary Medical Insurance</div>
+              <div class="insurance-title">BlueCross BlueShield Premier</div>
+            </div>
+            <div class="insurance-shield">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+          </div>
+
+          <div class="insurance-details">
+            <div class="insurance-id">BCBS-NY-99482103</div>
+            <div class="insurance-plan">Comprehensive Health &amp; Telehealth PPO</div>
+          </div>
+        </div>
+
+        <div class="insurance-footer">
+          <span>Cardholder: Sarah Miller</span>
+          <span>Valid Thru: 12/2027</span>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- 4. Designated Emergency Contact -->
+    <section class="emergency-card">
+      <div class="emergency-left">
+        <div class="emergency-icon-box">
+          <i class="fa-solid fa-phone"></i>
+        </div>
+        <div>
+          <div class="emergency-title">Designated Emergency Contact</div>
+          <div class="emergency-name">Michael Miller (Spouse)</div>
+          <div class="emergency-phone">+1 (555) 890-4412</div>
+        </div>
+      </div>
+      <button class="btn-call-contact" onclick="callContact('+15558904412')">
+        Call Contact
+      </button>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-brand">
+        <h3><i class="fa-solid fa-heart-pulse"></i> MedEase</h3>
+        <p>Your premier digital health appointment gateway. Book top board-certified physicians for hospital clinic visits or encrypted HD video consultations in minutes.</p>
+        <div class="footer-security-badges">
+          <span class="sec-badge"><i class="fa-solid fa-shield-halved"></i> HIPAA Certified</span>
+          <span class="sec-badge"><i class="fa-solid fa-lock"></i> 256-Bit Encrypted</span>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Departments</h4>
+        <ul>
+          <li><a href="./appointment.html?specialty=Cardiology">Cardiology &amp; Heart Care</a></li>
+          <li><a href="./appointment.html?specialty=Dermatology">Dermatology &amp; Skin</a></li>
+          <li><a href="./appointment.html?specialty=Pediatrics">Pediatrics &amp; Child Care</a></li>
+          <li><a href="./appointment.html?specialty=Orthopedics">Orthopedics &amp; Sports Bone</a></li>
+          <li><a href="./appointment.html?specialty=Neurology">Neurology &amp; Brain Sciences</a></li>
+          <li><a href="./appointment.html?specialty=General+Medicine">General Primary Care</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Patient Portal</h4>
+        <ul>
+          <li><a href="./appointment.html">Find All Doctors</a></li>
+          <li><a href="./patient.html">My Consultations</a></li>
+          <li><a href="./telecon.html">Telehealth Video Visits</a></li>
+          <li><a href="./patient.html">Patient Health Records</a></li>
+          <li><a href="./appointment.html">Book Instant Appointment</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>24/7 Clinical Support</h4>
+        <div class="support-info-list">
+          <div class="support-item">
+            <i class="fa-solid fa-phone"></i>
+            <div>Urgent Helpline: 911 / 1-800-MED-EASE</div>
+          </div>
+          <div class="support-item">
+            <i class="fa-regular fa-envelope"></i>
+            <div>care@medease.health</div>
+          </div>
+          <div class="support-item">
+            <i class="fa-solid fa-location-dot"></i>
+            <div>Metro Central Medical Towers, NY</div>
+          </div>
+          <div class="support-item">
+            <i class="fa-regular fa-clock"></i>
+            <div>Virtual Clinic: 24 Hours / 7 Days</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./appointments.js"></script>
+  <!-- Vanilla JavaScript -->
+  <script>
+    const defaultProfile = {
+      name: 'Sarah Miller', email: 'sarah.miller@example.com', phone: '+1 (555) 234-8901',
+      address: '742 Park Avenue, Apt 6B, New York, NY', bloodType: 'O+',
+      height: '5 ft 6 in (168 cm)', weight: '132 lbs (60 kg)',
+      allergies: ['Penicillin', 'Peanuts'], conditions: ['Mild Asthma (Exercise-induced)']
+    };
+    let activeProfile = { ...defaultProfile };
+
+    function getProfileKey(email) {
+      return email ? `medease_profile_${encodeURIComponent(email.trim().toLowerCase())}` : 'medease_profile';
+    }
+
+    function readStoredObject(key) {
+      try { return JSON.parse(localStorage.getItem(key) || 'null'); }
+      catch (error) { console.warn(`Could not read ${key}:`, error); return null; }
+    }
+
+    function renderProfileChips(containerId, values, className) {
+      const container = document.getElementById(containerId);
+      container.replaceChildren();
+      (Array.isArray(values) ? values : []).filter(Boolean).forEach((value) => {
+        const chip = document.createElement('span');
+        chip.className = className;
+        chip.textContent = value;
+        container.appendChild(chip);
+      });
+      if (!container.childElementCount) {
+        const empty = document.createElement('span');
+        empty.className = className;
+        empty.textContent = 'None recorded';
+        container.appendChild(empty);
+      }
+    }
+
+    function renderProfile() {
+      document.getElementById('profileName').textContent = activeProfile.name || defaultProfile.name;
+      document.getElementById('profileEmail').textContent = activeProfile.email || '';
+      document.getElementById('profilePhone').textContent = activeProfile.phone || '';
+      document.getElementById('profileAddress').textContent = activeProfile.address || 'Address not added';
+      document.getElementById('profileBloodType').textContent = activeProfile.bloodType || 'Not recorded';
+      document.getElementById('profileHeight').textContent = activeProfile.height || 'Not recorded';
+      document.getElementById('profileWeight').textContent = activeProfile.weight || 'Not recorded';
+      renderProfileChips('profileAllergies', activeProfile.allergies, 'allergy-pill');
+      renderProfileChips('profileConditions', activeProfile.conditions, 'condition-pill');
+    }
+
+    function editProfile() {
+      const fields = {
+        editProfileName: activeProfile.name, editProfileEmail: activeProfile.email,
+        editProfilePhone: activeProfile.phone, editProfileAddress: activeProfile.address,
+        editBloodType: activeProfile.bloodType, editHeight: activeProfile.height,
+        editWeight: activeProfile.weight, editAllergies: (activeProfile.allergies || []).join(', '),
+        editConditions: (activeProfile.conditions || []).join(', ')
+      };
+      Object.entries(fields).forEach(([id, value]) => { document.getElementById(id).value = value || ''; });
+      document.getElementById('profileFeedback').textContent = '';
+      document.getElementById('profileDialog').showModal();
+    }
+
+    function closeProfileEditor() { document.getElementById('profileDialog').close(); }
+    function listFromInput(value) { return value.split(',').map((item) => item.trim()).filter(Boolean); }
+
+    document.getElementById('profileEditorForm').addEventListener('submit', (event) => {
+      event.preventDefault();
+      const nextProfile = {
+        name: document.getElementById('editProfileName').value.trim(),
+        email: document.getElementById('editProfileEmail').value.trim(),
+        phone: document.getElementById('editProfilePhone').value.trim(),
+        address: document.getElementById('editProfileAddress').value.trim(),
+        bloodType: document.getElementById('editBloodType').value.trim(),
+        height: document.getElementById('editHeight').value.trim(),
+        weight: document.getElementById('editWeight').value.trim(),
+        allergies: listFromInput(document.getElementById('editAllergies').value),
+        conditions: listFromInput(document.getElementById('editConditions').value)
+      };
+      try {
+        const user = readStoredObject('medease_user');
+        const previousEmail = user?.email || activeProfile.email;
+        localStorage.setItem(getProfileKey(nextProfile.email), JSON.stringify(nextProfile));
+        localStorage.setItem('medease_profile', JSON.stringify(nextProfile));
+        if (user && previousEmail) {
+          const updatedUser = { ...user, name: nextProfile.name, email: nextProfile.email, phone: nextProfile.phone };
+          localStorage.setItem('medease_user', JSON.stringify(updatedUser));
+          const accounts = readStoredObject('medease_accounts') || [];
+          const updatedAccounts = accounts.map((account) => account.email === previousEmail.toLowerCase()
+            ? { ...account, name: nextProfile.name, email: nextProfile.email.toLowerCase(), phone: nextProfile.phone }
+            : account);
+          localStorage.setItem('medease_accounts', JSON.stringify(updatedAccounts));
+        }
+        activeProfile = nextProfile;
+        renderProfile();
+        closeProfileEditor();
+      } catch (error) {
+        document.getElementById('profileFeedback').textContent = 'Your profile could not be saved. Check that browser storage is available and try again.';
+        console.error('Unable to save profile:', error);
+      }
+    });
+
+    const signedInUser = readStoredObject('medease_user');
+    const fallbackProfile = readStoredObject('medease_profile') || {};
+    const accountProfile = signedInUser ? readStoredObject(getProfileKey(signedInUser.email)) || {} : {};
+    activeProfile = { ...defaultProfile, ...fallbackProfile, ...signedInUser, ...accountProfile };
+    renderProfile();
+
+    function callContact(number) {
+      if (confirm("Dial designated emergency contact (" + number + ")?")) {
+        window.location.href = "tel:" + number;
+      }
+    }
+
+    function renderAppointments() {
+      const appointmentList = document.getElementById('appointmentList');
+      appointmentList.replaceChildren();
+
+      try {
+        const appointments = window.MedEaseAppointments.getAll();
+        if (appointments.length === 0) {
+          const emptyMessage = document.createElement('p');
+          emptyMessage.className = 'appointments-empty';
+          emptyMessage.textContent = 'No appointments yet. Book an appointment to see it here.';
+          appointmentList.appendChild(emptyMessage);
+          return;
+        }
+
+        appointments.forEach((appointment) => {
+          const card = document.createElement('article');
+          card.className = 'appointment-card';
+
+          const details = document.createElement('div');
+          const doctor = document.createElement('div');
+          doctor.className = 'appointment-doctor';
+          doctor.textContent = appointment.doctor || 'Doctor';
+
+          const appointmentInfo = document.createElement('div');
+          appointmentInfo.className = 'appointment-details';
+          const date = appointment.date
+            ? new Date(appointment.date + 'T00:00:00').toLocaleDateString()
+            : 'Date not available';
+          appointmentInfo.textContent = [
+            appointment.id ? `ID ${appointment.id}` : '',
+            appointment.specialty,
+            date,
+            appointment.time,
+            appointment.mode,
+            appointment.patientName ? `Patient: ${appointment.patientName}` : '',
+            appointment.phone ? `Contact: ${appointment.phone}` : ''
+          ].filter(Boolean).join(' · ');
+
+          details.append(doctor, appointmentInfo);
+
+          const status = document.createElement('span');
+          status.className = 'appointment-status';
+          status.textContent = appointment.status || 'Confirmed';
+
+          const actions = document.createElement('div');
+          actions.className = 'appointment-actions';
+          const receipt = document.createElement('a');
+          receipt.href = `./appointment.html?receipt=${encodeURIComponent(appointment.id)}`;
+          receipt.textContent = 'View receipt';
+          receipt.style.cssText = 'display:inline-block;background:#2563eb;color:#fff;padding:8px 10px;border-radius:8px;font-size:12px;font-weight:700';
+          actions.appendChild(receipt);
+          card.append(details, status, actions);
+          appointmentList.appendChild(card);
+        });
+      } catch (error) {
+        console.error('Unable to load appointments:', error);
+        const errorMessage = document.createElement('p');
+        errorMessage.className = 'appointments-error';
+        errorMessage.textContent = 'Appointments could not be loaded. Please check browser storage and try again.';
+        appointmentList.appendChild(errorMessage);
+      }
+    }
+
+    renderAppointments();
+
+    // Top Search Box Enter key opens the appointment search.
+    const searchInput = document.getElementById('patientSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.value.trim() !== '') {
+          window.location.href = `./appointment.html?query=${encodeURIComponent(e.target.value.trim())}`;
+        }
+      });
+    }
+  </script>
+</body>
+</html>

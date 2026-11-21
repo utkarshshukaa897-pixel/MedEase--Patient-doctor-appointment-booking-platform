@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Book Doctor Appointment - MedEase</title>
+
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+    /* ================= BASE STYLES ================= */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Modal Backdrop */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 999;
+    }
+
+    /* Modal Window with smooth scrolling on mobile */
+    .modal-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 620px;
+      max-height: 92vh;
+      overflow-y: auto;
+      border-radius: 24px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.3);
+      padding: 28px 32px;
+      position: relative;
+      animation: modalFadeIn 0.2s ease-out;
+    }
+
+    @keyframes modalFadeIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Header */
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .modal-title-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .modal-title-wrap i {
+      color: #2563eb;
+      font-size: 20px;
+      margin-top: 2px;
+    }
+
+    .modal-title-wrap h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .modal-title-wrap p {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 22px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 4px;
+      transition: color 0.2s;
+    }
+    .btn-close:hover { color: #0f172a; }
+
+    /* ================= STEPPER WIZARD ================= */
+    .wizard-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #f1f5f9;
+      user-select: none;
+      gap: 6px;
+      overflow-x: auto;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    .step-badge {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #64748b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .step-item.active {
+      color: #2563eb;
+    }
+    .step-item.active .step-badge {
+      background: #2563eb;
+      color: #ffffff;
+    }
+
+    .step-item.completed {
+      color: #10b981;
+    }
+    .step-item.completed .step-badge {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    /* ================= SECTION COMMON ================= */
+    .section-label {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #64748b;
+      margin-bottom: 10px;
+    }
+
+    .step-content {
+      display: none;
+    }
+    .step-content.active {
+      display: block;
+    }
+
+    /* ================= STEP 1: MODE & DOCTOR ================= */
+    .mode-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .mode-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      transition: all 0.2s;
+      background: #ffffff;
+    }
+
+    .mode-card.selected {
+      border-color: #3b82f6;
+      background: #f0f7ff;
+    }
+
+    .mode-left {
+      display: flex;
+      gap: 10px;
+    }
+
+    .mode-left i {
+      color: #2563eb;
+      font-size: 14px;
+      margin-top: 2px;
+    }
+
+    .mode-info h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .mode-info p {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    .mode-price {
+      font-size: 13px;
+      font-weight: 800;
+      color: #2563eb;
+    }
+
+    /* Selected Physician Preview */
+    .selected-physician-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
+      background: #fafafa;
+    }
+
+    .physician-img {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      object-fit: cover;
+    }
+
+    .physician-spec {
+      font-size: 10px;
+      font-weight: 800;
+      color: #2563eb;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .physician-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .physician-clinic {
+      font-size: 11px;
+      color: #64748b;
+    }
+
+    .input-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #64748b;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .form-select, .form-input, .form-textarea {
+      width: 100%;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: #0f172a;
+      background-color: #ffffff;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .form-select:focus, .form-input:focus, .form-textarea:focus {
+      border-color: #2563eb;
+    }
+
+    /* ================= STEP 2: TIME SLOTS ================= */
+    .date-input-wrap {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .slot-pill {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      color: #334155;
+      background: #ffffff;
+      transition: all 0.2s;
+    }
+
+    .slot-pill:hover {
+      border-color: #cbd5e1;
+      background: #f8fafc;
+    }
+
+    .slot-pill.selected {
+      background-color: #2563eb;
+      border-color: #2563eb;
+      color: #ffffff;
+    }
+
+    .slot-guarantee-note {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 10px;
+    }
+
+    /* ================= STEP 3: PATIENT INFO ================= */
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 70px;
+    }
+
+    /* ================= STEP 4: PAYMENT ================= */
+    .payment-summary-card {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .summary-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #475569;
+      margin-bottom: 6px;
+    }
+
+    .summary-doctor {
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .summary-divider {
+      height: 1px;
+      background-color: #e2e8f0;
+      margin: 10px 0;
+    }
+
+    .total-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .total-amount {
+      font-size: 18px;
+      font-weight: 800;
+      color: #2563eb;
+    }
+
+    /* Coupon Box */
+    .coupon-wrap {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .coupon-wrap input {
+      flex: 1;
+      text-transform: uppercase;
+    }
+
+    .btn-apply-coupon {
+      background-color: #334155;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-apply-coupon:hover { background-color: #1e293b; }
+
+    /* Payment Methods Grid */
+    .payment-methods-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .pay-method-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px 8px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      color: #334155;
+      background: #ffffff;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pay-method-card i {
+      font-size: 16px;
+      color: #64748b;
+    }
+
+    .pay-method-card.selected {
+      border-color: #2563eb;
+      background-color: #eff6ff;
+      color: #2563eb;
+    }
+
+    .pay-method-card.selected i {
+      color: #2563eb;
+    }
+
+    /* ================= FOOTER / ACTION BUTTONS ================= */
+    .modal-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 24px;
+      padding-top: 14px;
+    }
+
+    .btn-back {
+      background: none;
+      border: none;
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-back:hover { color: #0f172a; }
+
+    .btn-continue {
+      background-color: #2563eb;
+      color: white;
+      border: none;
+      padding: 10px 22px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      margin-left: auto;
+      transition: background 0.2s;
+    }
+    .btn-continue:hover { background-color: #1d4ed8; }
+
+    .btn-confirm {
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 11px 24px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      margin-left: auto;
+      transition: background 0.2s;
+    }
+    .btn-confirm:hover { background-color: #059669; }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      .modal-card { padding: 20px; }
+      .mode-grid, .slots-grid, .form-grid-2, .payment-methods-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" id="appointmentModal">
+    <div class="modal-card">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <i class="fa-regular fa-calendar-check"></i>
+          <div>
+            <h2>Book Doctor Appointment</h2>
+            <p>Board-certified specialists &bull; Zero waiting delay guarantee</p>
+          </div>
+        </div>
+        <button class="btn-close" onclick="closeModal()" title="Close">&times;</button>
+      </div>
+
+      <!-- Stepper Wizard Navigation -->
+      <div class="wizard-stepper">
+        <div class="step-item active" id="stepIndicator1">
+          <span class="step-badge" id="stepBadge1">1</span>
+          <span>Mode &amp; Doctor</span>
+        </div>
+        <div class="step-item" id="stepIndicator2">
+          <span class="step-badge" id="stepBadge2">2</span>
+          <span>Time Slot</span>
+        </div>
+        <div class="step-item" id="stepIndicator3">
+          <span class="step-badge" id="stepBadge3">3</span>
+          <span>Patient Info</span>
+        </div>
+        <div class="step-item" id="stepIndicator4">
+          <span class="step-badge" id="stepBadge4">4</span>
+          <span>Payment</span>
+        </div>
+      </div>
+
+      <!-- ================= STEP 1 ================= -->
+      <div class="step-content active" id="step1">
+        <div class="section-label">Consultation Mode</div>
+        <div class="mode-grid">
+          <!-- Option 1: In-Clinic -->
+          <div class="mode-card selected" id="modeClinicCard" onclick="selectMode(this, 'In-Clinic Hospital Visit')">
+            <div class="mode-left">
+              <i class="fa-solid fa-location-dot"></i>
+              <div class="mode-info">
+                <h4>In-Clinic Visit</h4>
+                <p>Physical hospital examination</p>
+              </div>
+            </div>
+            <span class="mode-price" id="modeClinicPrice">$130</span>
+          </div>
+
+          <!-- Option 2: Telehealth -->
+          <div class="mode-card" id="modeVideoCard" onclick="selectMode(this, 'Telehealth Video Call')">
+            <div class="mode-left">
+              <i class="fa-solid fa-video"></i>
+              <div class="mode-info">
+                <h4>Telehealth Video</h4>
+                <p>Encrypted HD video consultation</p>
+              </div>
+            </div>
+            <span class="mode-price" id="modeVideoPrice">$90</span>
+          </div>
+        </div>
+
+        <div class="section-label">Selected Physician</div>
+        <div class="selected-physician-card">
+          <img class="physician-img" id="selectedDocImg" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200" alt="Dr. Sarah" />
+          <div>
+            <div class="physician-spec" id="selectedDocSpec">Cardiology</div>
+            <div class="physician-name" id="selectedDocName">Dr. Sarah Al-Mansoor</div>
+            <div class="physician-clinic" id="selectedDocClinic">Metropolitan Heart &amp; Vascular Institute</div>
+          </div>
+        </div>
+
+        <label class="input-label">Change Physician</label>
+        <select class="form-select" id="doctorSelect" onchange="changePhysician(this)">
+          <option value="Sarah" data-spec="Cardiology" data-clinic="Metropolitan Heart &amp; Vascular Institute" data-img="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=200" data-clinicfee="130" data-videofee="90">
+            Dr. Sarah Al-Mansoor — Cardiology ($130 / $90)
+          </option>
+          <option value="Marcus" data-spec="Dermatology" data-clinic="Apex Skin &amp; Laser Dermatology Center" data-img="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=200" data-clinicfee="95" data-videofee="75">
+            Dr. Marcus Brody — Dermatology ($95 / $75)
+          </option>
+          <option value="Priya" data-spec="Pediatrics" data-clinic="St. Jude Children's Health Pavilion" data-img="https://images.unsplash.com/photo-1594824813511-37d4d445c71b?auto=format&fit=crop&q=80&w=200" data-clinicfee="85" data-videofee="65">
+            Dr. Priya Patel — Pediatrics ($85 / $65)
+          </option>
+          <option value="James" data-spec="Orthopedics" data-clinic="Central Orthopedic &amp; Spine Pavilion" data-img="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=200" data-clinicfee="140" data-videofee="95">
+            Dr. James Harrison — Orthopedics ($140 / $95)
+          </option>
+          <option value="Elena" data-spec="Neurology" data-clinic="Manhattan Brain &amp; Spine Institute" data-img="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&q=80&w=200" data-clinicfee="150" data-videofee="105">
+            Dr. Elena Rostova — Neurology ($150 / $105)
+          </option>
+          <option value="Jonathan" data-spec="General Medicine" data-clinic="Metro Primary Care &amp; Diagnostic" data-img="https://images.unsplash.com/photo-1537368910025-700350fe46c7?auto=format&fit=crop&q=80&w=200" data-clinicfee="75" data-videofee="50">
+            Dr. Jonathan Vance — General Medicine ($75 / $50)
+          </option>
+          <option value="Maya" data-spec="Dentistry" data-clinic="Pearl Smile Dental &amp; Aesthetic Studio" data-img="https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&q=80&w=200" data-clinicfee="80" data-videofee="50">
+            Dr. Maya Lin — Dentistry ($80 / $50)
+          </option>
+          <option value="Kenneth" data-spec="Psychiatry" data-clinic="MindHealth Behavioral &amp; Wellness Institute" data-img="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=200" data-clinicfee="135" data-videofee="110">
+            Dr. Kenneth Thorne — Psychiatry ($135 / $110)
+          </option>
+        </select>
+
+        <div class="modal-footer">
+          <div></div>
+          <button class="btn-continue" onclick="nextStep(2)">
+            Continue &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= STEP 2 ================= -->
+      <div class="step-content" id="step2">
+        <div class="section-label">Select Appointment Date</div>
+        <div class="date-input-wrap">
+          <input type="date" class="form-input" id="apptDate" />
+        </div>
+
+        <div class="section-label">Choose Available Arrival Window / Slot</div>
+        <div class="slots-grid">
+          <div class="slot-pill" onclick="selectSlot(this)">09:00 AM - 09:30 AM</div>
+          <div class="slot-pill selected" onclick="selectSlot(this)">10:00 AM - 10:30 AM</div>
+          <div class="slot-pill" onclick="selectSlot(this)">11:15 AM - 11:45 AM</div>
+          <div class="slot-pill" onclick="selectSlot(this)">02:00 PM - 02:30 PM</div>
+          <div class="slot-pill" onclick="selectSlot(this)">03:30 PM - 04:00 PM</div>
+          <div class="slot-pill" onclick="selectSlot(this)">04:45 PM - 05:15 PM</div>
+        </div>
+
+        <div class="slot-guarantee-note">
+          <i class="fa-regular fa-clock"></i>
+          <span>Appointments are scheduled with 100% on-time physician arrival guarantee.</span>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-back" onclick="nextStep(1)">&larr; Back</button>
+          <button class="btn-continue" onclick="nextStep(3)">
+            Continue &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= STEP 3 ================= -->
+      <div class="step-content" id="step3">
+        <div class="section-label">Patient Medical Details</div>
+
+        <div class="form-grid-2">
+          <div>
+            <label class="input-label">Patient Full Name</label>
+            <input type="text" class="form-input" id="patientName" value="Sarah Miller" />
+          </div>
+          <div>
+            <label class="input-label">Phone (for SMS Reminders)</label>
+            <input type="text" class="form-input" id="patientPhone" value="+1 (555) 234-8901" />
+          </div>
+        </div>
+
+        <div class="form-grid-2">
+          <div>
+            <label class="input-label">Patient Age</label>
+            <input type="number" class="form-input" id="patientAge" value="29" />
+          </div>
+          <div>
+            <label class="input-label">Gender</label>
+            <select class="form-select" id="patientGender">
+              <option value="Female" selected>Female</option>
+              <option value="Male">Male</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="input-label">Reason for Visit / Primary Symptoms</label>
+          <textarea class="form-textarea" placeholder="e.g. Regular health assessment, recurring migraine, persistent fatigue..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-back" onclick="nextStep(2)">&larr; Back</button>
+          <button class="btn-continue" onclick="nextStep(4)">
+            Continue &rarr;
+          </button>
+        </div>
+      </div>
+
+      <!-- ================= STEP 4 ================= -->
+      <div class="step-content" id="step4">
+        <!-- Breakdown Card -->
+        <div class="payment-summary-card">
+          <div class="summary-line">
+            <span class="summary-doctor" id="summaryDoc">Dr. Sarah Al-Mansoor</span>
+            <span id="summaryDoctorFee">$130.00</span>
+          </div>
+          <div class="summary-line">
+            <span id="summaryMode">In-Clinic Hospital Visit</span>
+            <span>Included</span>
+          </div>
+          <div class="summary-line">
+            <span>MedEase Platform Fee</span>
+            <span>$4.00</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="total-line">
+            <span>Total Amount</span>
+            <span class="total-amount" id="summaryTotal">$134.00</span>
+          </div>
+        </div>
+
+        <!-- Coupon Field -->
+        <div class="coupon-wrap">
+          <input type="text" class="form-input" id="couponCode" placeholder="COUPON (E.G. DOC20)" />
+          <button class="btn-apply-coupon" onclick="applyCoupon()">Apply</button>
+        </div>
+
+        <!-- Payment Method Selection -->
+        <div class="section-label">Payment Method</div>
+        <div class="payment-methods-grid">
+          <div class="pay-method-card selected" onclick="selectPayMethod(this)">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Insurance PPO</span>
+          </div>
+          <div class="pay-method-card" onclick="selectPayMethod(this)">
+            <i class="fa-regular fa-credit-card"></i>
+            <span>Credit Card</span>
+          </div>
+          <div class="pay-method-card" onclick="selectPayMethod(this)">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Pay at Clinic</span>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn-back" onclick="nextStep(3)">&larr; Back</button>
+          <button class="btn-confirm" onclick="confirmAppointment()">
+            <i class="fa-regular fa-circle-check"></i>
+            <span id="confirmBtnText">Confirm Appointment ($134.00)</span>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="./appointments.js"></script>
+  <!-- ================= VANILLA JAVASCRIPT ================= -->
+  <script>
+    // State variables
+    let currentStep = 1;
+    let selectedMode = "In-Clinic Hospital Visit";
+    let clinicFee = 130;
+    let videoFee = 90;
+    let currentFee = 130;
+    const bookingFee = 4.00;
+    let discount = 0;
+    let selectedSlotTime = "10:00 AM - 10:30 AM";
+
+    // Change step in wizard
+    function nextStep(stepNumber) {
+      document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+      document.getElementById('step' + stepNumber).classList.add('active');
+      currentStep = stepNumber;
+
+      for (let i = 1; i <= 4; i++) {
+        const item = document.getElementById('stepIndicator' + i);
+        const badge = document.getElementById('stepBadge' + i);
+
+        item.classList.remove('active', 'completed');
+
+        if (i < currentStep) {
+          item.classList.add('completed');
+          badge.innerHTML = '<i class="fa-solid fa-check"></i>';
+        } else if (i === currentStep) {
+          item.classList.add('active');
+          badge.textContent = i;
+        } else {
+          badge.textContent = i;
+        }
+      }
+
+      if (stepNumber === 4) {
+        updatePaymentSummary();
+      }
+    }
+
+    // Step 1: Select Consultation Mode
+    function selectMode(element, mode) {
+      document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedMode = mode;
+      currentFee = mode.includes('Video') ? videoFee : clinicFee;
+    }
+
+    // Step 1: Change Physician Dropdown
+    function changePhysician(select) {
+      const option = select.options[select.selectedIndex];
+      document.getElementById('selectedDocName').textContent = option.text.split(' — ')[0];
+      document.getElementById('selectedDocSpec').textContent = option.dataset.spec;
+      document.getElementById('selectedDocClinic').textContent = option.dataset.clinic;
+      document.getElementById('selectedDocImg').src = option.dataset.img;
+      
+      clinicFee = parseFloat(option.dataset.clinicfee) || 120;
+      videoFee = parseFloat(option.dataset.videofee) || 80;
+      
+      document.getElementById('modeClinicPrice').textContent = '$' + clinicFee;
+      document.getElementById('modeVideoPrice').textContent = '$' + videoFee;
+
+      currentFee = selectedMode.includes('Video') ? videoFee : clinicFee;
+    }
+
+    // Step 2: Slot Selection
+    function selectSlot(element) {
+      document.querySelectorAll('.slot-pill').forEach(pill => pill.classList.remove('selected'));
+      element.classList.add('selected');
+      selectedSlotTime = element.textContent.trim();
+    }
+
+    // Step 4: Payment Summary Calculation
+    function updatePaymentSummary() {
+      const doctorName = document.getElementById('selectedDocName').textContent;
+      document.getElementById('summaryDoc').textContent = doctorName;
+      document.getElementById('summaryMode').textContent = selectedMode;
+      document.getElementById('summaryDoctorFee').textContent = '$' + currentFee.toFixed(2);
+
+      const total = Math.max(0, (currentFee + bookingFee) - discount);
+      document.getElementById('summaryTotal').textContent = '$' + total.toFixed(2);
+      document.getElementById('confirmBtnText').textContent = `Confirm Appointment ($${total.toFixed(2)})`;
+    }
+
+    // Step 4: Apply Coupon Code
+    function applyCoupon() {
+      const code = document.getElementById('couponCode').value.trim().toUpperCase();
+      if (code === "DOC20") {
+        discount = (currentFee * 0.20);
+        alert("Coupon DOC20 Applied! 20% discount on physician fee.");
+        updatePaymentSummary();
+      } else if (code === "") {
+        alert("Please enter a valid coupon code.");
+      } else {
+        alert("Invalid Coupon Code.");
+      }
+    }
+
+    // Step 4: Select Payment Method
+    function selectPayMethod(element) {
+      document.querySelectorAll('.pay-method-card').forEach(c => c.classList.remove('selected'));
+      element.classList.add('selected');
+    }
+
+    // Close Modal -> Returns to the previous page or home.
+    function closeModal() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = './home.html.html';
+      }
+    }
+
+    // Initialize with URL Parameters if passed (e.g. ?doctor=Marcus&mode=telehealth)
+    window.addEventListener('DOMContentLoaded', () => {
+      const dateInput = document.getElementById('apptDate');
+      const today = new Date();
+      const localToday = new Date(today.getTime() - today.getTimezoneOffset() * 60000)
+        .toISOString().slice(0, 10);
+      dateInput.min = localToday;
+      if (!dateInput.value) dateInput.value = localToday;
+
+      const params = new URLSearchParams(window.location.search);
+      const docParam = params.get('doctor');
+      const modeParam = params.get('mode');
+
+      const select = document.getElementById('doctorSelect');
+
+      if (docParam) {
+        for (let i = 0; i < select.options.length; i++) {
+          if (select.options[i].text.toLowerCase().includes(docParam.toLowerCase())) {
+            select.selectedIndex = i;
+            changePhysician(select);
+            break;
+          }
+        }
+      }
+
+      if (modeParam === 'telehealth' || modeParam === 'video') {
+        const videoCard = document.getElementById('modeVideoCard');
+        if (videoCard) selectMode(videoCard, 'Telehealth Video Call');
+      }
+    });
+
+    // Close Modal -> Returns to the home page when there is no previous page.
+    function closeModal() {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = './home.html.html';
+      }
+    }
+
+    // Confirm Appointment -> Stays on booking confirmation or goes to My Appointments
+    function confirmAppointment() {
+      const doctor = document.getElementById('selectedDocName').textContent;
+      const specialty = document.getElementById('selectedDocSpec').textContent;
+      const date = document.getElementById('apptDate').value;
+      const patientName = document.getElementById('patientName').value.trim();
+
+      if (!date || !patientName) {
+        alert('Please enter the appointment date and patient name.');
+        return;
+      }
+
+      try {
+        window.MedEaseAppointments.add({
+          id: `${Date.now()}`,
+          doctor,
+          specialty,
+          mode: selectedMode,
+          date,
+          time: selectedSlotTime,
+          patientName,
+          status: 'Confirmed'
+        });
+      } catch (error) {
+        console.error('Unable to save appointment:', error);
+        alert('Your appointment could not be saved. Please check browser storage and try again.');
+        return;
+      }
+
+      alert(`🎉 Appointment successfully confirmed with ${doctor}!\nRedirecting to your appointments dashboard...`);
+      window.location.href = './patient.html';
+    }
+  </script>
+</body>
+</html>

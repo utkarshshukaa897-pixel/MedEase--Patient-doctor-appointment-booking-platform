@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedEase - Doctor Appointment &amp; Telehealth Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --accent-teal: #0d9488;
+      --accent-cyan: #0284c7;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --border-color: #e2e8f0;
+      --bg-body: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    /* Keep the main window static and scroll-free */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      background-color: var(--bg-body);
+      color: var(--text-main);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+    /* TOP PROMO BAR */
+    .promo-bar {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 12.5px;
+      padding: 9px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .promo-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .promo-badge {
+      background-color: var(--primary);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .promo-highlight {
+      color: #fbbf24;
+      font-weight: 700;
+    }
+
+    .promo-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .promo-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #cbd5e1;
+      font-size: 12px;
+    }
+
+    /* NAVIGATION BAR */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 100;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .logo-text-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .logo-name {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .tag-doctor {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .logo-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .nav-link.active {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .badge-count {
+      background: #0284c7;
+      color: white;
+      font-size: 10px;
+      border-radius: 50%;
+      width: 17px;
+      height: 17px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      padding: 8px 14px 8px 34px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      font-size: 13px;
+      outline: none;
+      width: 170px;
+      background: #f8fafc;
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      width: 210px;
+      background: #fff;
+      border-color: var(--primary);
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+    }
+
+    /* PATIENT PROFILE DROPDOWN */
+    .profile-dropdown-wrapper {
+      position: relative;
+    }
+
+    .profile-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 5px 10px 5px 6px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .profile-pill:hover, .profile-pill.active {
+      background: #f1f5f9;
+      border-color: var(--border-color);
+    }
+
+    .profile-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+
+    .profile-meta {
+      text-align: left;
+    }
+
+    .profile-meta .name {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #0f172a;
+    }
+
+    .profile-meta .role {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .profile-chevron {
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+
+    .profile-pill.active .profile-chevron {
+      transform: rotate(180deg);
+    }
+
+    .profile-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 230px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+      padding: 8px;
+      display: none;
+      z-index: 1000;
+    }
+
+    .profile-dropdown-menu.show {
+      display: block;
+    }
+
+    .dropdown-header-user {
+      padding: 8px 10px 10px;
+      border-bottom: 1px solid #f1f5f9;
+      margin-bottom: 4px;
+    }
+
+    .dropdown-header-user .full-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .dropdown-header-user .user-email {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      word-break: break-all;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      border-radius: 8px;
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .dropdown-item svg {
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+
+    .dropdown-item:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .dropdown-item:hover svg {
+      color: var(--primary);
+    }
+
+    .dropdown-item.item-danger {
+      color: #ef4444;
+      border-top: 1px solid #f1f5f9;
+      margin-top: 4px;
+      padding-top: 10px;
+    }
+
+    .dropdown-item.item-danger:hover {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    .btn-header-appointment {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #ffffff;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-header-appointment:hover {
+      background: var(--primary-hover);
+    }
+
+    /* IFRAME: Occupies entire screen area below the navbar */
+    #contentFrame {
+      flex: 1;
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .app-shell { display:flex; flex:1; min-height:0; width:100%; overflow:hidden; }
+    .sidebar { width:220px; flex:0 0 220px; background:#fff; border-right:1px solid var(--border-color); padding:18px 12px; overflow-y:auto; }
+    .sidebar-label { color:var(--text-light); font-size:10px; font-weight:800; letter-spacing:.08em; padding:8px 12px; text-transform:uppercase; }
+    .sidebar-link { display:flex; align-items:center; padding:11px 12px; margin:3px 0; border-radius:9px; color:#475569; font-size:13px; font-weight:700; }
+    .sidebar-link:hover,.sidebar-link.active { color:#0369a1; background:#e0f2fe; }
+    .mobile-menu-button { display:none; background:#eff6ff; color:#1d4ed8; border-radius:8px; padding:9px 11px; font-size:13px; font-weight:700; }
+    @media (max-width: 900px) {
+      .navbar { padding:10px 16px; flex-wrap:wrap; }
+      .nav-menu { display:none; }
+      .nav-right-actions { gap:8px; }
+    }
+    @media (max-width: 640px) {
+      html,body { overflow:hidden; }
+      .promo-bar { padding:8px 12px; }
+      .promo-right { display:none; }
+      .navbar { gap:8px; }
+      .logo-sub,.profile-meta,.profile-chevron,.search-box { display:none; }
+      .btn-header-appointment { padding:9px 10px; font-size:12px; }
+      .mobile-menu-button { display:block; position:absolute; z-index:121; top:8px; left:8px; }
+      .app-shell { position:relative; }
+      .sidebar { display:none; position:absolute; z-index:120; inset:0 auto 0 0; box-shadow:8px 0 24px #0f172a22; }
+      .sidebar.open { display:block; }
+      #contentFrame { min-width:0; width:100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. FIXED TOP PROMO BAR -->
+  <div class="promo-bar">
+    <div class="promo-left">
+      <span class="promo-badge">PROMO</span>
+      <span>⚡ <strong>24/7 Virtual Urgent Care Available</strong> • Use code <span class="promo-highlight">DOC20</span> for 20% off your first video consult!</span>
+    </div>
+    <div class="promo-right">
+      <div class="promo-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        Emergency Hotline: <strong>911 / 1-800-MED-EASE</strong>
+      </div>
+      <div class="promo-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        HIPAA Certified
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. FIXED NAVBAR -->
+  <header class="navbar">
+    <a href="./home.html.html" target="contentFrame" class="logo-group">
+      <div class="logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+      </div>
+      <div class="logo-text-col">
+        <div class="logo-title-wrap">
+          <span class="logo-name">MedEase</span>
+          <span class="tag-doctor">Doctor Care</span>
+        </div>
+        <span class="logo-sub">Find Top Doctors &amp; Clinics</span>
+      </div>
+    </a>
+
+    <!-- LINKS LOAD INSIDE contentFrame -->
+    <ul class="nav-menu">
+      <li>
+        <a href="./home.html.html" target="contentFrame" class="nav-link active">Home &amp; Specialities</a>
+      </li>
+      <li>
+        <a href="./appointment.html" target="contentFrame" class="nav-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M20 4 8.12 15.88"/><path d="M14.47 14.48 20 20M8.12 8.12 12 12"/></svg>
+          All Doctors
+        </a>
+      </li>
+      <li>
+        <a href="./patient.html" target="contentFrame" class="nav-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          My Appointments <span class="badge-count" id="appointmentCount">0</span>
+        </a>
+      </li>
+    </ul>
+
+    <div class="nav-right-actions">
+      <div class="search-box">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="topNavSearch" placeholder="Doctor or condition..." />
+      </div>
+
+      <!-- PROFILE DROPDOWN -->
+      <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
+        <button class="profile-pill" id="profilePillBtn" aria-haspopup="true" aria-expanded="false" title="Account Menu">
+          <img class="profile-avatar" id="navbarAvatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80" alt="Sarah" />
+          <div class="profile-meta">
+            <div class="name" id="navbarUserName">Sarah</div>
+            <div class="role" id="navbarUserRole">Patient</div>
+          </div>
+          <svg class="profile-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+
+        <div class="profile-dropdown-menu" id="profileDropdownMenu">
+          <div class="dropdown-header-user">
+            <div class="full-name" id="dropdownUserFull">Sarah Miller</div>
+            <div class="user-email" id="dropdownUserEmail">sarah.miller@example.com</div>
+          </div>
+
+          <a href="./patient.html" target="contentFrame" class="dropdown-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>View Medical Profile</span>
+          </a>
+
+          <a href="./patient.html" target="contentFrame" class="dropdown-item">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            <span>My Appointments (<span id="dropdownAppointmentCount">0</span>)</span>
+          </a>
+
+          <button class="dropdown-item item-danger" id="signOutBtn" onclick="handleSignOut()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Sign Out</span>
+          </button>
+        </div>
+      </div>
+
+      <a href="./appointment.html" target="contentFrame" class="btn-header-appointment">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        Book Appointment
+      </a>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <button class="mobile-menu-button" id="mobileMenuButton" aria-expanded="false" aria-controls="mainSidebar">Menu</button>
+    <nav class="sidebar" id="mainSidebar" aria-label="Main navigation">
+      <div class="sidebar-label">Made Easy</div>
+      <a href="./home.html.html" target="contentFrame" class="sidebar-link active">Home</a>
+      <a href="./appointment.html" target="contentFrame" class="sidebar-link">Find Doctors</a>
+      <a href="./home.html.html#specialties" target="contentFrame" class="sidebar-link">Departments</a>
+      <a href="./patient.html" target="contentFrame" class="sidebar-link">My Appointments</a>
+      <a href="./home.html.html#how-it-works" target="contentFrame" class="sidebar-link">About Us</a>
+      <a href="./home.html.html#contact" target="contentFrame" class="sidebar-link">Contact Us</a>
+    </nav>
+    <iframe name="contentFrame" id="contentFrame" src="./home.html.html" title="Made Easy content"></iframe>
+  </div>
+
+  <script src="./appointments.js"></script>
+  <script>
+    const guestAvatar = 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100&auto=format&fit=crop&q=80';
+
+    function showSignedOutState() {
+      document.getElementById('navbarUserName').textContent = 'Sign In';
+      document.getElementById('navbarUserRole').textContent = 'Guest';
+      document.getElementById('navbarAvatar').src = guestAvatar;
+      document.getElementById('navbarAvatar').alt = 'Guest';
+      document.getElementById('dropdownUserFull').textContent = 'Guest';
+      document.getElementById('dropdownUserEmail').textContent = 'You are signed out';
+      document.getElementById('signOutBtn').hidden = true;
+    }
+
+    function updateAppointmentCount() {
+      try {
+        const count = window.MedEaseAppointments.getAll().length;
+        document.getElementById('appointmentCount').textContent = count;
+        document.getElementById('dropdownAppointmentCount').textContent = count;
+      } catch (error) {
+        console.error('Unable to read appointment count:', error);
+      }
+    }
+
+    try {
+      if (localStorage.getItem('medease_signed_out') === 'true') {
+        window.location.replace('./auth.html?mode=login');
+      } else {
+        const savedUser = JSON.parse(localStorage.getItem('medease_user') || 'null');
+        if (savedUser) {
+          document.getElementById('navbarUserName').textContent = savedUser.name || 'Patient';
+          document.getElementById('dropdownUserFull').textContent = savedUser.name || 'Patient';
+          document.getElementById('dropdownUserEmail').textContent = savedUser.email || '';
+        }
+      }
+    } catch (error) {
+      console.error('Unable to read sign-in state:', error);
+    }
+
+    updateAppointmentCount();
+    window.addEventListener('storage', updateAppointmentCount);
+
+    // Tab active switcher for top navbar
+    const navLinks = document.querySelectorAll('.nav-menu .nav-link');
+    navLinks.forEach(link => {
+      link.addEventListener('click', function() {
+        navLinks.forEach(item => item.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    const sidebarLinks = document.querySelectorAll('.sidebar-link');
+    const sidebar = document.getElementById('mainSidebar');
+    sidebarLinks.forEach(link => link.addEventListener('click', () => {
+      sidebarLinks.forEach(item => item.classList.remove('active'));
+      link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
+      sidebar.classList.remove('open');
+      document.getElementById('mobileMenuButton').setAttribute('aria-expanded', 'false');
+    }));
+    document.getElementById('contentFrame').addEventListener('load', function () {
+      let activeTarget = 'home.html.html';
+      try {
+        const page = this.contentWindow.location;
+        if (page.pathname.endsWith('/patient.html')) activeTarget = 'patient.html';
+        else if (page.pathname.endsWith('/appointment.html')) activeTarget = 'appointment.html';
+        else if (page.hash === '#specialties') activeTarget = '#specialties';
+        else if (page.hash === '#how-it-works') activeTarget = '#how-it-works';
+        else if (page.hash === '#contact') activeTarget = '#contact';
+      } catch (error) { /* Keep the last selected item if a page is not same-origin. */ }
+      sidebarLinks.forEach(link => {
+        const target = new URL(link.href);
+        const active = activeTarget.startsWith('#')
+          ? target.hash === activeTarget
+          : target.pathname.endsWith(activeTarget) && !target.hash;
+        link.classList.toggle('active', active);
+        if (active) link.setAttribute('aria-current', 'page');
+        else link.removeAttribute('aria-current');
+      });
+    });
+    document.getElementById('mobileMenuButton').addEventListener('click', function () {
+      const open = sidebar.classList.toggle('open');
+      this.setAttribute('aria-expanded', String(open));
+    });
+
+    // Top Search Box -> loads filtered search into iframe
+    document.getElementById('topNavSearch').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.target.value.trim() !== '') {
+        const query = encodeURIComponent(e.target.value.trim());
+        document.getElementById('contentFrame').src = `./appointment.html?query=${query}`;
+      }
+    });
+
+    // Profile Dropdown logic
+    const profilePillBtn = document.getElementById('profilePillBtn');
+    const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+    const profileDropdownWrapper = document.getElementById('profileDropdownWrapper');
+
+    profilePillBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const isOpen = profileDropdownMenu.classList.contains('show');
+      isOpen ? closeDropdown() : openDropdown();
+    });
+
+    function openDropdown() {
+      profileDropdownMenu.classList.add('show');
+      profilePillBtn.classList.add('active');
+      profilePillBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeDropdown() {
+      profileDropdownMenu.classList.remove('show');
+      profilePillBtn.classList.remove('active');
+      profilePillBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!profileDropdownWrapper.contains(e.target)) closeDropdown();
+    });
+
+    function handleSignOut() {
+      if (confirm("Are you sure you want to sign out of MedEase?")) {
+        try {
+          sessionStorage.clear();
+          localStorage.removeItem('medease_user');
+          localStorage.setItem('medease_signed_out', 'true');
+        } catch (error) {
+          console.error('Unable to persist sign-out state:', error);
+        }
+        window.location.replace('./auth.html?mode=login');
+      }
+    }
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedEase - Doctor Appointment &amp; Telehealth Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================================
+       GLOBAL RESETS & VARIABLES
+       ========================================================== */
+    :root {
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-light: #eff6ff;
+      --accent-teal: #0d9488;
+      --accent-cyan: #0284c7;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --border-color: #e2e8f0;
+      --bg-body: #f8fafc;
+      --bg-card: #ffffff;
+      --footer-bg: #091428;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    a, button, input, select {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid rgba(37, 99, 235, 0.45);
+      outline-offset: 3px;
+    }
+
+    a:active, button:active {
+      opacity: 0.82;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      outline: none;
+    }
+
+    /* Common Badge Pill */
+    .section-badge {
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      color: #0284c7;
+      background: #e0f2fe;
+      padding: 5px 14px;
+      border-radius: 999px;
+      margin-bottom: 12px;
+    }
+
+    /* Section Headers */
+    .section-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin-top: 6px;
+    }
+
+    .link-explore {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: gap 0.2s;
+    }
+
+    .link-explore:hover {
+      gap: 8px;
+    }
+
+    /* ==========================================================
+       1. TOP PROMO BAR
+       ========================================================== */
+    .promo-bar {
+      background: #0f172a;
+      color: #e2e8f0;
+      font-size: 12.5px;
+      padding: 9px 36px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .promo-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .promo-badge {
+      background-color: var(--primary);
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 7px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    .promo-highlight {
+      color: #fbbf24;
+      font-weight: 700;
+    }
+
+    .promo-right {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .promo-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #cbd5e1;
+      font-size: 12px;
+    }
+
+    /* ==========================================================
+       2. NAVIGATION BAR
+       ========================================================== */
+    .navbar {
+      background: #ffffff;
+      border-bottom: 1px solid var(--border-color);
+      padding: 12px 36px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+
+    .logo-icon {
+      width: 40px;
+      height: 40px;
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+
+    .logo-text-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .logo-name {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .tag-doctor {
+      background: #e0f2fe;
+      color: #0369a1;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+    }
+
+    .logo-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      list-style: none;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .nav-link.active {
+      background: #e0f2fe;
+      color: #0284c7;
+    }
+
+    .badge-count {
+      background: #0284c7;
+      color: white;
+      font-size: 10px;
+      border-radius: 50%;
+      width: 17px;
+      height: 17px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-right-actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .search-box {
+      position: relative;
+    }
+
+    .search-box input {
+      padding: 8px 14px 8px 34px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      font-size: 13px;
+      outline: none;
+      width: 170px;
+      background: #f8fafc;
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      width: 210px;
+      background: #fff;
+      border-color: var(--primary);
+    }
+
+    .search-box svg {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-light);
+    }
+
+    /* ==========================================================
+       PATIENT PROFILE DROPDOWN STYLES
+       ========================================================== */
+    .profile-dropdown-wrapper {
+      position: relative;
+    }
+
+    .profile-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 5px 10px 5px 6px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .profile-pill:hover, .profile-pill.active {
+      background: #f1f5f9;
+      border-color: var(--border-color);
+    }
+
+    .profile-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-color);
+    }
+
+    .profile-meta {
+      text-align: left;
+    }
+
+    .profile-meta .name {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: #0f172a;
+    }
+
+    .profile-meta .role {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .profile-chevron {
+      color: var(--text-muted);
+      transition: transform 0.2s ease;
+    }
+
+    .profile-pill.active .profile-chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Dropdown Menu Window */
+    .profile-dropdown-menu {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 230px;
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      box-shadow: 0 12px 28px -4px rgba(0, 0, 0, 0.12), 0 4px 10px -2px rgba(0, 0, 0, 0.04);
+      padding: 8px;
+      display: none;
+      z-index: 1000;
+      animation: menuSlideDown 0.15s ease-out;
+    }
+
+    .profile-dropdown-menu.show {
+      display: block;
+    }
+
+    @keyframes menuSlideDown {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .dropdown-header-user {
+      padding: 8px 10px 10px;
+      border-bottom: 1px solid #f1f5f9;
+      margin-bottom: 4px;
+    }
+
+    .dropdown-header-user .full-name {
+      font-size: 13.5px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .dropdown-header-user .user-email {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-top: 2px;
+      word-break: break-all;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      border-radius: 8px;
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      transition: all 0.15s ease;
+      cursor: pointer;
+    }
+
+    .dropdown-item svg {
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: color 0.15s ease;
+    }
+
+    .dropdown-item:hover {
+      background: #f1f5f9;
+      color: #0f172a;
+    }
+
+    .dropdown-item:hover svg {
+      color: var(--primary);
+    }
+
+    .dropdown-item.item-danger {
+      color: #ef4444;
+      border-top: 1px solid #f1f5f9;
+      margin-top: 4px;
+      padding-top: 10px;
+    }
+
+    .dropdown-item.item-danger svg {
+      color: #ef4444;
+    }
+
+    .dropdown-item.item-danger:hover {
+      background: #fef2f2;
+      color: #dc2626;
+    }
+
+    .dropdown-item.item-danger:hover svg {
+      color: #dc2626;
+    }
+
+    .btn-header-appointment {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary);
+      color: #ffffff;
+      padding: 9px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-header-appointment:hover {
+      background: var(--primary-hover);
+    }
+
+    /* ==========================================================
+       3. HERO SECTION
+       ========================================================== */
+    .hero-wrapper {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 50px 20px 60px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-verified-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 6px 18px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    .hero-h1 {
+      font-size: 48px;
+      font-weight: 800;
+      line-height: 1.18;
+      letter-spacing: -0.025em;
+      color: #0f172a;
+    }
+
+    .hero-gradient-text {
+      background: linear-gradient(90deg, #2563eb, #0d9488);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .hero-lead {
+      font-size: 15.5px;
+      line-height: 1.6;
+      color: #475569;
+      max-width: 720px;
+      margin-top: 14px;
+      margin-bottom: 38px;
+    }
+
+    .search-card-main {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.02);
+      border-radius: 16px;
+      padding: 12px 18px;
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 44px;
+    }
+
+    .search-card-main:focus-within {
+      border-color: #93c5fd;
+      box-shadow: 0 12px 28px -6px rgba(37, 99, 235, 0.12), 0 0 0 3px rgba(37, 99, 235, 0.08);
+    }
+
+    .search-column {
+      flex: 1;
+      text-align: left;
+      padding: 4px 12px;
+      border-right: 1px solid #f1f5f9;
+      position: relative;
+      border-radius: 8px;
+      transition: background-color 0.2s ease;
+    }
+
+    .search-column:focus-within {
+      background: #f8fbff;
+    }
+
+    .search-column:last-of-type {
+      border-right: none;
+    }
+
+    .column-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .column-select-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .column-select-wrap select {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: #1e293b;
+      width: 100%;
+      min-width: 0;
+      min-height: 40px;
+      padding: 6px 8px 6px 0;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      z-index: 1;
+      pointer-events: auto;
+      appearance: auto;
+      -webkit-appearance: menulist;
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .column-select-wrap select:hover,
+    .column-select-wrap select:focus-visible {
+      color: var(--primary);
+    }
+
+    .column-select-wrap select option {
+      color: var(--text-main);
+      background: #ffffff;
+    }
+
+    .column-select-wrap svg {
+      display: none;
+    }
+
+    .column-select-wrap:active {
+      background: var(--primary-light);
+    }
+
+    .btn-hero-search {
+      background: var(--primary);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+
+    .btn-hero-search:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-hero-search:active {
+      transform: translateY(1px);
+    }
+
+    .trust-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      width: 100%;
+      max-width: 960px;
+    }
+
+    .metric-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-align: left;
+    }
+
+    .metric-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .bg-blue { background: #eff6ff; color: #2563eb; }
+    .bg-amber { background: #fffbeb; color: #f59e0b; }
+    .bg-green { background: #f0fdf4; color: #16a34a; }
+    .bg-cyan { background: #ecfeff; color: #0891b2; }
+
+    .metric-text-group .metric-bold {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .metric-text-group .metric-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+    }
+
+    /* ==========================================================
+       4. FEATURED PROMOS SECTION
+       ========================================================== */
+    .content-container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 30px 24px 60px;
+    }
+
+    .promos-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+    }
+
+    .promo-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .promo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.08);
+    }
+
+    .promo-img-wrap {
+      height: 155px;
+      position: relative;
+      background: #0f172a;
+    }
+
+    .promo-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+
+    .promo-overlay-badges {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      display: flex;
+      gap: 6px;
+    }
+
+    .tag-category-pill {
+      background: rgba(37, 99, 235, 0.9);
+      color: #fff;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      letter-spacing: 0.4px;
+    }
+
+    .tag-discount-pill {
+      background: rgba(255, 255, 255, 0.95);
+      color: #0f172a;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+    }
+
+    .promo-content {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .promo-dept {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .promo-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      line-height: 1.3;
+      margin-bottom: 6px;
+    }
+
+    .promo-feature-point {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .promo-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .promo-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid #f1f5f9;
+      padding-top: 12px;
+      margin-top: auto;
+    }
+
+    .promo-code-text {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-claim {
+      background: #1e293b;
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: 7px;
+      font-size: 11.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s;
+    }
+
+    .btn-claim:hover {
+      background: var(--primary);
+    }
+
+    /* ==========================================================
+       5. CLINICAL SPECIALTIES DIRECTORY (10 CARDS)
+       ========================================================== */
+    .specialties-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .dept-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 18px 16px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .dept-card:hover {
+      border-color: #93c5fd;
+      box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.08);
+      transform: translateY(-3px);
+    }
+
+    .dept-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .dept-icon-box {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+
+    .dept-count {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .dept-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .dept-summary {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      line-height: 1.45;
+      margin-bottom: 14px;
+      min-height: 48px;
+    }
+
+    .dept-symptoms-section {
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .symptoms-title {
+      font-size: 10px;
+      font-weight: 800;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .symptoms-text {
+      font-size: 11px;
+      color: #475569;
+      line-height: 1.4;
+    }
+
+    .dept-card-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid #f8fafc;
+      padding-top: 10px;
+    }
+
+    .dept-price-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dept-price-label {
+      font-size: 9.5px;
+      color: var(--text-light);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .dept-price-val {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    .btn-dept-book {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--primary);
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      transition: gap 0.2s;
+    }
+
+    .btn-dept-book:hover {
+      gap: 6px;
+    }
+
+    .btn-view-all-docs {
+      background: #1e293b;
+      color: #ffffff;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-view-all-docs:hover {
+      background: #0f172a;
+      color: #ffffff;
+    }
+
+    /* ==========================================================
+       6. HOW MEDEASE WORKS
+       ========================================================== */
+    .how-it-works-section {
+      text-align: center;
+      padding: 40px 0 60px;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 36px;
+    }
+
+    .step-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 30px 24px;
+      text-align: left;
+      position: relative;
+      transition: transform 0.2s;
+    }
+
+    .step-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .promo-card:active,
+    .dept-card:active,
+    .step-card:active {
+      transform: translateY(-1px) scale(0.99);
+    }
+
+    .step-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #eff6ff;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .step-card:nth-child(3) .step-number {
+      background: #ecfdf5;
+      color: #059669;
+    }
+
+    .step-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 10px;
+    }
+
+    .step-desc {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* ==========================================================
+       7. FOOTER
+       ========================================================== */
+    .site-footer {
+      background: var(--footer-bg);
+      color: #94a3b8;
+      padding: 56px 36px 28px;
+      border-top: 1px solid #1e293b;
+    }
+
+    .footer-main-grid {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .footer-col-about {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer-brand .brand-name {
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .footer-about-text {
+      font-size: 13px;
+      line-height: 1.6;
+      color: #94a3b8;
+    }
+
+    .footer-badges {
+      display: flex;
+      gap: 10px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .security-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11.5px;
+      color: #cbd5e1;
+      border: 1px solid #1e293b;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 5px 12px;
+      border-radius: 6px;
+    }
+
+    .footer-col-heading {
+      color: #ffffff;
+      font-size: 12.5px;
+      font-weight: 800;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .footer-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-nav-list li a {
+      font-size: 13px;
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+
+    .footer-nav-list li a:hover {
+      color: #ffffff;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    .contact-item svg {
+      margin-top: 2px;
+      flex-shrink: 0;
+    }
+
+    .footer-bottom-bar {
+      max-width: 1240px;
+      margin: 0 auto;
+      border-top: 1px solid #1e293b;
+      padding-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 12px;
+    }
+
+    .footer-legal-links {
+      display: flex;
+      gap: 18px;
+    }
+
+    .footer-legal-links a:hover {
+      color: #ffffff;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .specialties-grid { grid-template-columns: repeat(3, 1fr); }
+      .promos-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-main-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 900px) {
+      .navbar { flex-direction: column; padding: 14px 20px; }
+      .nav-menu { overflow-x: auto; width: 100%; padding-bottom: 4px; }
+      .nav-right-actions { width: 100%; justify-content: space-between; }
+      .hero-h1 { font-size: 34px; }
+      .search-card-main { flex-direction: column; align-items: stretch; }
+      .search-column { border-right: none; border-bottom: 1px solid #f1f5f9; padding: 8px 0; }
+      .trust-metrics { grid-template-columns: repeat(2, 1fr); }
+      .specialties-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .promo-bar { padding: 8px 16px; flex-direction: column; align-items: flex-start; }
+      .promos-grid, .specialties-grid, .trust-metrics, .footer-main-grid { grid-template-columns: 1fr; }
+      .footer-bottom-bar { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 3. HERO SECTION -->
+  <section class="hero-wrapper">
+    <div class="hero-verified-badge">
+      ✨ Over 25,000+ Verified Patient Appointments Booked
+    </div>
+
+    <h1 class="hero-h1">
+      Book Top–Rated Doctors,<br />
+      <span class="hero-gradient-text">In–Clinic or Telehealth</span>
+    </h1>
+
+    <p class="hero-lead">
+      Connect with board-certified specialists across cardiology, dermatology, pediatrics, and more. Transparent fees, zero waiting room delays, and instant prescriptions.
+    </p>
+
+    <!-- Search / Filter Card -->
+    <div class="search-card-main">
+      <div class="search-column">
+        <label class="column-label" for="specialtySelect">Medical Department</label>
+        <div class="column-select-wrap">
+          <select id="specialtySelect">
+            <option value="all">All departments</option>
+            <option value="General Medicine">General Medicine</option>
+            <option value="Cardiology">Cardiology</option>
+            <option value="Dermatology">Dermatology</option>
+            <option value="Pediatrics">Pediatrics</option>
+            <option value="Orthopedics">Orthopedics</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Dentistry">Dentistry</option>
+            <option value="Psychiatry">Psychiatry</option>
+            <option value="Ophthalmology">Ophthalmology</option>
+            <option value="ENT">ENT</option>
+          </select>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+
+      <div class="search-column">
+        <label class="column-label" for="typeSelect">Consultation Type</label>
+        <div class="column-select-wrap">
+          <select id="typeSelect">
+            <option value="any">Any (Clinic or Video)</option>
+            <option value="clinic">In-Clinic Only</option>
+            <option value="telehealth">Video Telehealth</option>
+          </select>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+
+      <div class="search-column">
+        <label class="column-label" for="citySelect">City / Region</label>
+        <div class="column-select-wrap">
+          <select id="citySelect">
+            <option value="">Any city / region</option>
+            <option value="New York / Metro Area">New York / Metro Area</option>
+            <option value="Los Angeles, CA">Los Angeles, CA</option>
+            <option value="Chicago, IL">Chicago, IL</option>
+            <option value="Houston, TX">Houston, TX</option>
+          </select>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+
+      <button class="btn-hero-search" id="heroSearchBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Search
+      </button>
+    </div>
+
+    <!-- Trust Stats Row -->
+    <div class="trust-metrics">
+      <div class="metric-item">
+        <div class="metric-icon bg-blue">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+        </div>
+        <div class="metric-text-group">
+          <div class="metric-bold">100% Verified</div>
+          <div class="metric-sub">Board-Certified Specialists</div>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-icon bg-amber">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="metric-text-group">
+          <div class="metric-bold">4.96 / 5.0 Rating</div>
+          <div class="metric-sub">From 18,000+ Reviews</div>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-icon bg-green">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="metric-text-group">
+          <div class="metric-bold">&lt; 10 Mins</div>
+          <div class="metric-sub">Virtual Clinic Response</div>
+        </div>
+      </div>
+
+      <div class="metric-item">
+        <div class="metric-icon bg-cyan">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        </div>
+        <div class="metric-text-group">
+          <div class="metric-bold">Instant Insurance</div>
+          <div class="metric-sub">PPO, HMO &amp; Direct Pay</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. FEATURED MEDICAL PROMOS -->
+  <section class="content-container">
+    <div class="section-badge">Special Offers &amp; Packages</div>
+    <div class="section-header-row">
+      <h2 class="section-title">Featured Medical Promos &amp; Health Checkups</h2>
+      <a href="./appointment.html" class="link-explore">Explore All Doctors &rarr;</a>
+    </div>
+
+    <div class="promos-grid">
+      <!-- Promo 1 -->
+      <div class="promo-card">
+        <div class="promo-img-wrap">
+          <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600&auto=format&fit=crop&q=80" alt="Telehealth" />
+          <div class="promo-overlay-badges">
+            <span class="tag-category-pill">POPULAR PROMO</span>
+            <span class="tag-discount-pill">20% OFF</span>
+          </div>
+        </div>
+        <div class="promo-content">
+          <div class="promo-dept">Telehealth</div>
+          <div class="promo-title">First Video Consultation</div>
+          <div class="promo-feature-point">20% OFF Any Specialist</div>
+          <div class="promo-desc">Connect with a certified doctor from the comfort of your home via HD encrypted consult.</div>
+          <div class="promo-footer">
+            <span class="promo-code-text">🏷️ Use Code: <strong>DOC20</strong></span>
+            <button class="btn-claim" onclick="claimOffer('DOC20')">Claim &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promo 2 -->
+      <div class="promo-card">
+        <div class="promo-img-wrap">
+          <img src="https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=600&auto=format&fit=crop&q=80" alt="Cardiology" />
+          <div class="promo-overlay-badges">
+            <span class="tag-category-pill">PREVENTIVE CARE</span>
+            <span class="tag-discount-pill">35% OFF</span>
+          </div>
+        </div>
+        <div class="promo-content">
+          <div class="promo-dept">Cardiology</div>
+          <div class="promo-title">Comprehensive Cardiac Screening</div>
+          <div class="promo-feature-point">Advanced ECG &amp; Lipid Panel</div>
+          <div class="promo-desc">Includes resting ECG, lipid profile, cardiac consultation, and personalized lifestyle guide.</div>
+          <div class="promo-footer">
+            <span class="promo-code-text">🏷️ Use Code: <strong>HEARTCARE</strong></span>
+            <button class="btn-claim" onclick="claimOffer('HEARTCARE')">Claim &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promo 3 -->
+      <div class="promo-card">
+        <div class="promo-img-wrap">
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&auto=format&fit=crop&q=80" alt="Pediatrics" />
+          <div class="promo-overlay-badges">
+            <span class="tag-category-pill">FAMILY SPECIAL</span>
+            <span class="tag-discount-pill">Flat $49</span>
+          </div>
+        </div>
+        <div class="promo-content">
+          <div class="promo-dept">Pediatrics</div>
+          <div class="promo-title">Pediatric Growth &amp; Vaccine Check</div>
+          <div class="promo-feature-point">Complete Child Wellness</div>
+          <div class="promo-desc">Growth milestones assessment, vaccination schedule review, and pediatrician consult.</div>
+          <div class="promo-footer">
+            <span class="promo-code-text">🏷️ Use Code: <strong>KIDCARE</strong></span>
+            <button class="btn-claim" onclick="claimOffer('KIDCARE')">Claim &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promo 4 -->
+      <div class="promo-card">
+        <div class="promo-img-wrap">
+          <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?w=600&auto=format&fit=crop&q=80" alt="Dermatology" />
+          <div class="promo-overlay-badges">
+            <span class="tag-category-pill">TRENDING</span>
+            <span class="tag-discount-pill">$25 Voucher</span>
+          </div>
+        </div>
+        <div class="promo-content">
+          <div class="promo-dept">Dermatology</div>
+          <div class="promo-title">Clear Skin Dermatologist Consult</div>
+          <div class="promo-feature-point">Acne &amp; Skin Analysis</div>
+          <div class="promo-desc">Get deep clinical evaluation for acne, stubborn pigmentation, and customized care.</div>
+          <div class="promo-footer">
+            <span class="promo-code-text">🏷️ Use Code: <strong>DERMAFRESH</strong></span>
+            <button class="btn-claim" onclick="claimOffer('DERMAFRESH')">Claim &rarr;</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. MEDICAL SPECIALTIES DIRECTORY (10 CARDS) -->
+  <section class="content-container" id="specialties">
+    <div class="section-badge">Multi-Column Clinical Directory</div>
+    <div class="section-header-row">
+      <div>
+        <h2 class="section-title">Explore Medical Specialties &amp; Departments</h2>
+        <p class="section-subtitle">Browse our comprehensive clinical departments. Every physician is board-certified and vetted for excellence.</p>
+      </div>
+      <a href="./appointment.html" class="btn-view-all-docs">View All Doctors (153+) &rarr;</a>
+    </div>
+
+    <div class="specialties-grid">
+      <!-- 1. General Medicine -->
+      <div class="dept-card">
+        <div class="dept-card-top">
+          <div class="dept-icon-box">🩺</div>
+          <div class="dept-count">24 Specialists</div>
+        </div>
+        <div class="dept-name">General Medicine</div>
+        <div class="dept-summary">Primary care, fevers, seasonal infections &amp; regular checkups</div>
+        <div class="dept-symptoms-section">
+          <div class="symptoms-title">Common Symptoms:</div>
+          <div class="symptoms-text">Fever &amp; Chills, Persistent Fatigue</div>
+        </div>
+        <div class="dept-card-bottom">
+          <div class="dept-price-col">
+            <span class="dept-price-label">FROM</span>
+            <span class="dept-price-val">$65</span>
+          </div>
+          <a href="./appointment.html?specialty=General+Medicine" class="btn-dept-book">Book &rarr;</a>
+        </div>
+      </div>
+
+      <!-- 2. Cardiology -->
+      <div class="dept-card">
+        <div class="dept-card-top">
+          <div class="dept-icon-box">❤️</div>
+          <div class="dept-count">18 Specialists</div>
+        </div>
+        <div class="dept-name">Cardiology</div>
+        <div class="dept-summary">Heart wellness, hypertension, ECG diagnostics &amp; lipid care</div>
+        <div class="dept-symptoms-section">
+          <div class="symptoms-title">Common Symptoms:</div>
+          <div class="symptoms-text">Chest Discomfort, Palpitations</div>
+        </div>
+        <div class="dept-card-bottom">
+          <div class="dept-price-col">
+            <span class="dept-price-label">FROM</span>
+            <span class="dept-price-val">$120</span>
+          </div>
+          <a href="./appointment.html?specialty=Cardiology" class="btn-dept-book">Book &rarr;</a>
+        </div>
+      </div>
+
+      <!-- 3. Dermatology -->
+      <div class="dept-card">
+        <div class="dept-card-top">
+          <div class="dept-icon-box">✨</div>
+          <div class="dept-count">15 Specialists</div>
+        </div>
+        <div class="dept-name">Dermatology</div>
+        <div class="dept-summary">Skin conditions, acne, eczema, allergies &amp; cosmetic health</div>
+        <div class="dept-symptoms-section">
+          <div class="symptoms-title">Common Symptoms:</div>
+          <div class="symptoms-text">Acne &amp; Rashes, Hair Fall</div>
+        </div>
+        <div class="dept-card-bottom">
+          <div class="dept-price-col">
+            <span class="dept-price-label">FROM</span>
+            <span class="dept-price-val">$85</span>
+          </div>
+          <a href="./appointment.html?specialty=Dermatology" class="btn-dept-book">Book &rarr;</a>
+        </div>
+      </div>
+
+      <!-- 4. Pediatrics -->
+      <div class="dept-card">
+        <div class="dept-card-top">
+          <div class="dept-icon-box">👶</div>
+          <div class="dept-count">16 Specialists</div>
+        </div>
+        <div class="dept-name">Pediatrics</div>
+        <div class="dept-summary">Newborn care, vaccinations, child growth &amp; pediatric illness</div>
+        <div class="dept-symptoms-section">
+          <div class="symptoms-title">Common Symptoms:</div>
+          <div class="symptoms-text">Childhood Fever, Vaccine Schedules</div>
+        </div>
+        <div class="dept-card-bottom">
+          <div class="dept-price-col">
+            <span class="dept-price-label">FROM</span>
+            <span class="dept-price-val">$75</span>
+          </div>
+          <a href="./appointment.html?specialty=Pediatrics" class="btn-dept-book">Book &rarr;</a>
+        </div>
+      </div>
+
+      <!-- 5. Orthopedics -->
+      <div class="dept-card">
+        <div class="dept-card-top">
+          <div class="dept-icon-box">🦴</div>
+          <div class="dept-count">14 Specialists</div>
+        </div>
+        <div class="dept-name">Orthopedics</div>
+        <div class="dept-summary">Bone fractures, joint pain, sports injuries &amp; spine recovery</div>
+        <div class="dept-symptoms-section">
+          <div class="symptoms-title">Common Symptoms:</div>
+          <div class="symptoms-text">Knee &amp; Joint Pain, Spine/Disc Aches</div>
+        </div>
+        <div class="dept-card-bottom">
+          <div class="dept-price-col">
+            <span class="dept-price-label">FROM</span>
+            <span class="dept-price-val">$95</span>
+          </div>
+          <a href="./appointment.html?specialty=Orthopedics" class="btn-dept-book">Book &rarr;</a>
+        </div>
+      </div>
+
+      <!-- 6. Neurology -->
+      <div class="dept-card">
+        <div class="dept-card-top">
+          <div class="dept-icon-box">🧠</div>
+          <div class="dept-count">11 Specialists</div>
+        </div>
+        <div class="dept-name">Neurology</div>
+        <div class="dept-summary">Brain health, chronic migraines, nerve disorders &amp; tremors</div>
+        <div class="dept-symptoms-section">
+          <div class="symptoms-title">Common Symptoms:</div>
+          <div class="symptoms-text">Chronic Migraines, Nerve Numbness</div>
+        </div>
+        <div class="dept-card-bottom">
+          <div class="dept-price-col">
+            <span class="dept-price-label">FROM</span>
+            <span class="dept-price-val">$135</span>
+          </div>
+          <a href="./appointment.html?specialty=Neurology" class="btn-dept-book">Book &rarr;</a>
+        </div>
+      </div>
+
+      <!-- 7. Dentistry -->
+      <div class="dept-card">
+        <div class="dept-card-top">
+          <div class="dept-icon-box">😁</div>
+          <div class="dept-count">19 Specialists</div>
+        </div>
+        <div class="dept-name">Dentistry</div>
+        <div class="dept-summary">Teeth cleaning, root canals, braces, implants &amp; oral surgery</div>
+        <div class="dept-symptoms-section">
+          <div class="symptoms-title">Common Symptoms:</div>
+          <div class="symptoms-text">Toothache &amp; Cavities, Bleeding Gums</div>
+        </div>
+        <div class="dept-card-bottom">
+          <div class="dept-price-col">
+            <span class="dept-price-label">FROM</span>
+            <span class="dept-price-val">$70</span>
+          </div>
+          <a href="./appointment.html?specialty=Dentistry" class="btn-dept-book">Book &rarr;</a>
+        </div>
+      </div>
+
+      <!-- 8. Ophthalmology -->
+      <div class="dept-card">
+        <div class="dept-card-top">
+          <div class="dept-icon-box">👁️</div>
+          <div class="dept-count">12 Specialists</div>
+        </div>
+        <div class="dept-name">Ophthalmology</div>
+        <div class="dept-summary">Eye exams, vision testing, glaucoma, cataract &amp; laser care</div>
+        <div class="dept-symptoms-section">
+          <div class="symptoms-title">Common Symptoms:</div>
+          <div class="symptoms-text">Blurry Vision, Eye Strain / Redness</div>
+        </div>
+        <div class="dept-card-bottom">
+          <div class="dept-price-col">
+            <span class="dept-price-label">FROM</span>
+            <span class="dept-price-val">$80</span>
+          </div>
+          <a href="./appointment.html?specialty=Ophthalmology" class="btn-dept-book">Book &rarr;</a>
+        </div>
+      </div>
+
+      <!-- 9. Psychiatry &amp; Mental Health -->
+      <div class="dept-card">
+        <div class="dept-card-top">
+          <div class="dept-icon-box">🌿</div>
+          <div class="dept-count">14 Specialists</div>
+        </div>
+        <div class="dept-name">Psychiatry &amp; Mental Health</div>
+        <div class="dept-summary">Anxiety, depression, ADHD, stress recovery &amp; therapy</div>
+        <div class="dept-symptoms-section">
+          <div class="symptoms-title">Common Symptoms:</div>
+          <div class="symptoms-text">Severe Anxiety, Insomnia / Stress</div>
+        </div>
+        <div class="dept-card-bottom">
+          <div class="dept-price-col">
+            <span class="dept-price-label">FROM</span>
+            <span class="dept-price-val">$110</span>
+          </div>
+          <a href="./appointment.html?specialty=Psychiatry" class="btn-dept-book">Book &rarr;</a>
+        </div>
+      </div>
+
+      <!-- 10. Ear, Nose &amp; Throat (ENT) -->
+      <div class="dept-card">
+        <div class="dept-card-top">
+          <div class="dept-icon-box">👂</div>
+          <div class="dept-count">10 Specialists</div>
+        </div>
+        <div class="dept-name">Ear, Nose &amp; Throat (ENT)</div>
+        <div class="dept-summary">Sinus infections, hearing loss, tonsils &amp; vocal cords</div>
+        <div class="dept-symptoms-section">
+          <div class="symptoms-title">Common Symptoms:</div>
+          <div class="symptoms-text">Sinus Pressure, Ear Infections</div>
+        </div>
+        <div class="dept-card-bottom">
+          <div class="dept-price-col">
+            <span class="dept-price-label">FROM</span>
+            <span class="dept-price-val">$75</span>
+          </div>
+          <a href="./appointment.html?specialty=ENT" class="btn-dept-book">Book &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. HOW MEDEASE WORKS -->
+  <section class="content-container" id="how-it-works">
+    <div class="how-it-works-section">
+      <div class="section-badge">Hassle-Free Healthcare</div>
+      <h2 class="section-title">How MedEase Works</h2>
+      <p class="section-subtitle" style="margin: 6px auto 0;">Book quality medical consultations in under 2 minutes</p>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-title">Find the Right Specialist</div>
+          <p class="step-desc">Filter by medical specialty, patient satisfaction ratings, location, language, and in-person or video consultation preferences.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-title">Select Date &amp; Confirmed Slot</div>
+          <p class="step-desc">Choose convenient morning, afternoon, or evening appointment slots with zero hold times or phone queue frustrations.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-title">Consult &amp; Receive Prescription</div>
+          <p class="step-desc">Visit the clinic or join the encrypted HD video consultation. Receive your digital prescription and doctor notes directly in your portal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. FOOTER -->
+  <footer class="site-footer" id="contact">
+    <div class="footer-main-grid">
+      <div class="footer-col-about">
+        <div class="footer-brand">
+          <div class="logo-icon" style="background:#1e293b; border-color:#334155;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          </div>
+          <span class="brand-name">MedEase</span>
+        </div>
+        <p class="footer-about-text">
+          Your premier digital health appointment gateway. Book top board-certified physicians for hospital clinic visits or encrypted HD video consultations in minutes.
+        </p>
+        <div class="footer-badges">
+          <span class="security-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            HIPAA Certified
+          </span>
+          <span class="security-pill">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            256-Bit Encrypted
+          </span>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-heading">Departments</div>
+        <ul class="footer-nav-list">
+          <li><a href="./appointment.html?specialty=Cardiology">Cardiology &amp; Heart Care</a></li>
+          <li><a href="./appointment.html?specialty=Dermatology">Dermatology &amp; Skin</a></li>
+          <li><a href="./appointment.html?specialty=Pediatrics">Pediatrics &amp; Child Care</a></li>
+          <li><a href="./appointment.html?specialty=Orthopedics">Orthopedics &amp; Sports Bone</a></li>
+          <li><a href="./appointment.html?specialty=Neurology">Neurology &amp; Brain Sciences</a></li>
+          <li><a href="./appointment.html?specialty=General+Medicine">General Primary Care</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-heading">Patient Portal</div>
+        <ul class="footer-nav-list">
+          <li><a href="./appointment.html">Find All Doctors</a></li>
+          <li><a href="./patient.html">My Consultations</a></li>
+          <li><a href="./telecon.html">Telehealth Video Visits</a></li>
+          <li><a href="./patient.html">Patient Health Records</a></li>
+          <li><a href="./appointment.html">Book Instant Appointment</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <div class="footer-col-heading">24/7 Clinical Support</div>
+        <div class="contact-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          <div>Urgent Helpline: <strong>911 / 1-800-MED-EASE</strong></div>
+        </div>
+        <div class="contact-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          <div>care@medease.health</div>
+        </div>
+        <div class="contact-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <div>Metro Central Medical Towers, NY</div>
+        </div>
+        <div class="contact-item">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <div>Virtual Clinic: 24 Hours / 7 Days</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div>&copy; 2026 MedEase Digital Healthcare Network Inc. All rights reserved.</div>
+      <div class="footer-legal-links">
+        <a href="#">HIPAA Notice</a>
+        <a href="#">Telehealth Consent</a>
+        <a href="#">Medical Privacy Policy</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================
+       JAVASCRIPT
+       ========================================================== -->
+  <script>
+    // Search Action -> Opens the appointment form with the selected filters.
+    document.getElementById('heroSearchBtn').addEventListener('click', () => {
+      const specialty = document.getElementById('specialtySelect').value;
+      const type = document.getElementById('typeSelect').value;
+      const city = document.getElementById('citySelect').value;
+      
+      const queryParams = new URLSearchParams({ search: '1' });
+      if (specialty !== 'all') queryParams.append('specialty', specialty);
+      if (type !== 'any') queryParams.append('mode', type);
+      if (city) queryParams.append('city', city);
+
+      window.location.href = `./appointment.html${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
+    });
+
+    // Top Search Box Enter Key redirect
+    const topNavSearch = document.getElementById('topNavSearch');
+    if (topNavSearch) {
+      topNavSearch.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && e.target.value.trim() !== '') {
+          window.location.href = `./appointment.html?query=${encodeURIComponent(e.target.value.trim())}`;
+        }
+      });
+    }
+
+    // Promo Code Claim helper
+    function claimOffer(code) {
+      const params = new URLSearchParams({ coupon: code });
+      const offerSpecialties = {
+        HEARTCARE: 'Cardiology',
+        KIDCARE: 'Pediatrics',
+        DERMAFRESH: 'Dermatology'
+      };
+
+      if (offerSpecialties[code]) params.set('specialty', offerSpecialties[code]);
+      if (code === 'DOC20') params.set('mode', 'telehealth');
+      window.location.href = `./appointment.html?${params.toString()}`;
+    }
+
+    // ==========================================================
+    // PATIENT PROFILE DROPDOWN LOGIC
+    // ==========================================================
+    const profilePillBtn = document.getElementById('profilePillBtn');
+    const profileDropdownMenu = document.getElementById('profileDropdownMenu');
+    const profileDropdownWrapper = document.getElementById('profileDropdownWrapper');
+
+    function openDropdown() {
+      profileDropdownMenu.classList.add('show');
+      profilePillBtn.classList.add('active');
+      profilePillBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeDropdown() {
+      profileDropdownMenu.classList.remove('show');
+      profilePillBtn.classList.remove('active');
+      profilePillBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    if (profilePillBtn && profileDropdownMenu && profileDropdownWrapper) {
+      profilePillBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = profileDropdownMenu.classList.contains('show');
+        if (isOpen) {
+          closeDropdown();
+        } else {
+          openDropdown();
+        }
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!profileDropdownWrapper.contains(e.target)) {
+          closeDropdown();
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeDropdown();
+        }
+      });
+    }
+
+    // Sign Out Action
+    function handleSignOut() {
+      if (confirm("Are you sure you want to sign out of MedEase?")) {
+        try {
+          sessionStorage.clear();
+          localStorage.removeItem('medease_user');
+          localStorage.setItem('medease_signed_out', 'true');
+        } catch (error) {
+          console.error('Unable to persist sign-out state:', error);
+        }
+        window.top.location.replace('./auth.html?mode=login');
+      }
+    }
+  </script>
+</body>
+</html>

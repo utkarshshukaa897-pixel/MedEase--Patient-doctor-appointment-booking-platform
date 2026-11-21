@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in or create an account | MedEase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root { --blue:#2563eb; --navy:#0f172a; --muted:#64748b; --line:#dbe4ef; }
+    * { box-sizing:border-box; }
+    body { margin:0; min-height:100vh; display:grid; place-items:center; padding:24px; color:var(--navy); background:linear-gradient(140deg,#eff6ff 0%,#f8fafc 55%,#ecfeff 100%); font-family:'Plus Jakarta Sans',Arial,sans-serif; }
+    .auth-layout { width:min(960px,100%); min-height:580px; display:grid; grid-template-columns:1fr 1fr; overflow:hidden; border:1px solid #e2e8f0; border-radius:24px; background:white; box-shadow:0 24px 70px #0f172a18; }
+    .welcome-panel { display:flex; flex-direction:column; justify-content:space-between; padding:42px; color:white; background:linear-gradient(145deg,#1d4ed8,#0891b2); }
+    .brand { display:flex; align-items:center; gap:12px; font-size:21px; font-weight:800; }
+    .brand-mark { width:42px; height:42px; display:grid; place-items:center; border:1px solid #ffffff70; border-radius:13px; background:#ffffff20; font-size:27px; }
+    .welcome-copy { max-width:390px; }
+    .welcome-copy .eyebrow { font-size:11px; font-weight:800; letter-spacing:.12em; text-transform:uppercase; opacity:.8; }
+    .welcome-copy h1 { margin:12px 0; font-size:36px; line-height:1.18; }
+    .welcome-copy p { color:#e0f2fe; line-height:1.75; }
+    .privacy-note { color:#dbeafe; font-size:12px; }
+    .form-panel { padding:48px 44px; align-self:center; }
+    .form-panel h2 { margin:0; font-size:25px; }
+    .form-intro { margin:8px 0 24px; color:var(--muted); font-size:13px; line-height:1.6; }
+    .mode-tabs { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:22px; padding:4px; background:#f1f5f9; border-radius:11px; }
+    .mode-tabs button { border:0; border-radius:8px; padding:10px; color:#475569; background:transparent; font-family:inherit; font-size:12px; font-weight:600; cursor:pointer; }
+    .mode-tabs button.active { color:#1d4ed8; background:white; box-shadow:0 1px 4px #0f172a12; }
+    .field { margin:14px 0; }
+    label { display:block; margin-bottom:6px; font-size:12px; font-weight:700; }
+    input { width:100%; min-height:44px; padding:10px 12px; border:1px solid var(--line); border-radius:9px; color:var(--navy); background:white; font-family:inherit; font-size:14px; }
+    input:focus { outline:3px solid #dbeafe; border-color:#60a5fa; }
+    .submit-button { width:100%; min-height:46px; margin-top:12px; border:0; border-radius:10px; color:white; background:var(--blue); font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; }
+    .submit-button:hover { background:#1d4ed8; }
+    .feedback { min-height:22px; margin:12px 0 0; color:#b91c1c; font-size:12px; line-height:1.5; }
+    .back-link { display:inline-block; margin-top:16px; color:#475569; font-size:12px; text-decoration:none; }
+    .back-link:hover { color:var(--blue); }
+    [hidden] { display:none !important; }
+    @media(max-width:700px) { body { padding:12px; } .auth-layout { grid-template-columns:1fr; } .welcome-panel { min-height:210px; padding:24px; } .welcome-copy { margin:26px 0 10px; } .welcome-copy h1 { font-size:26px; } .welcome-copy p,.privacy-note { display:none; } .form-panel { padding:28px 24px; } }
+  </style>
+</head>
+<body>
+  <main class="auth-layout">
+    <section class="welcome-panel">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">+</span><span>MedEase</span></div>
+      <div class="welcome-copy">
+        <div class="eyebrow">Healthcare, made easier</div>
+        <h1>Your care journey starts here.</h1>
+        <p>Sign in to manage your appointments and patient profile, or create an account to get started.</p>
+      </div>
+      <div class="privacy-note">Your account details stay on this device in this demo.</div>
+    </section>
+    <section class="form-panel" aria-labelledby="authTitle">
+      <h2 id="authTitle">Welcome back</h2>
+      <p class="form-intro" id="authIntro">Sign in to continue to your patient portal.</p>
+      <div class="mode-tabs" role="tablist" aria-label="Account access">
+        <button type="button" id="loginTab" class="active" role="tab" aria-selected="true">Sign in</button>
+        <button type="button" id="signupTab" role="tab" aria-selected="false">Create account</button>
+      </div>
+      <form id="authForm" novalidate>
+        <div class="field" id="nameField" hidden>
+          <label for="fullName">Full name</label>
+          <input id="fullName" name="name" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+        <div class="field" id="phoneField" hidden>
+          <label for="phone">Phone number</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" required minlength="8" />
+        </div>
+        <div class="field" id="confirmField" hidden>
+          <label for="confirmPassword">Confirm password</label>
+          <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" />
+        </div>
+        <button class="submit-button" id="submitButton" type="submit">Sign in</button>
+        <p class="feedback" id="authFeedback" aria-live="polite"></p>
+      </form>
+      <a class="back-link" href="./index.html.html">← Back to Made Easy</a>
+    </section>
+  </main>
+  <script>
+    const authForm = document.getElementById('authForm');
+    let authMode = new URLSearchParams(window.location.search).get('mode') === 'signup' ? 'signup' : 'login';
+
+    function setAuthMode(mode) {
+      authMode = mode;
+      const signup = mode === 'signup';
+      document.getElementById('nameField').hidden = !signup;
+      document.getElementById('phoneField').hidden = !signup;
+      document.getElementById('confirmField').hidden = !signup;
+      document.getElementById('fullName').required = signup;
+      document.getElementById('confirmPassword').required = signup;
+      document.getElementById('password').autocomplete = signup ? 'new-password' : 'current-password';
+      document.getElementById('loginTab').classList.toggle('active', !signup);
+      document.getElementById('signupTab').classList.toggle('active', signup);
+      document.getElementById('loginTab').setAttribute('aria-selected', String(!signup));
+      document.getElementById('signupTab').setAttribute('aria-selected', String(signup));
+      document.getElementById('authTitle').textContent = signup ? 'Create your account' : 'Welcome back';
+      document.getElementById('authIntro').textContent = signup ? 'Set up your patient account to manage care in one place.' : 'Sign in to continue to your patient portal.';
+      document.getElementById('submitButton').textContent = signup ? 'Create account' : 'Sign in';
+      document.getElementById('authFeedback').textContent = '';
+    }
+
+    document.getElementById('loginTab').addEventListener('click', () => setAuthMode('login'));
+    document.getElementById('signupTab').addEventListener('click', () => setAuthMode('signup'));
+
+    async function hashPassword(password, existingSalt) {
+      if (!window.crypto?.subtle) throw new Error('Secure password support is not available in this browser.');
+      const bytesToHex = (bytes) => [...bytes].map((byte) => byte.toString(16).padStart(2, '0')).join('');
+      const salt = existingSalt
+        ? new Uint8Array(existingSalt.match(/.{2}/g).map((byte) => parseInt(byte, 16)))
+        : window.crypto.getRandomValues(new Uint8Array(16));
+      const key = await window.crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+      const bits = await window.crypto.subtle.deriveBits({ name:'PBKDF2', salt, iterations:120000, hash:'SHA-256' }, key, 256);
+      return { salt: existingSalt || bytesToHex(salt), passwordHash: bytesToHex(new Uint8Array(bits)) };
+    }
+
+    function readAccounts() {
+      const value = JSON.parse(localStorage.getItem('medease_accounts') || '[]');
+      return Array.isArray(value) ? value : [];
+    }
+
+    function startSession(account) {
+      const profileKey = `medease_profile_${encodeURIComponent(account.email.trim().toLowerCase())}`;
+      const savedProfile = JSON.parse(localStorage.getItem(profileKey) || 'null');
+      const profile = savedProfile || { name: account.name, email: account.email, phone: account.phone || '', address: '' };
+      const user = { name: profile.name || account.name, email: profile.email || account.email, phone: profile.phone || account.phone || '' };
+      localStorage.setItem('medease_user', JSON.stringify(user));
+      localStorage.setItem('medease_signed_out', 'false');
+      localStorage.setItem(profileKey, JSON.stringify({ ...profile, ...user }));
+      localStorage.setItem('medease_profile', JSON.stringify({ ...profile, ...user }));
+      window.location.replace('./index.html.html');
+    }
+
+    authForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const feedback = document.getElementById('authFeedback');
+      const email = document.getElementById('email').value.trim().toLowerCase();
+      const password = document.getElementById('password').value;
+      const button = document.getElementById('submitButton');
+      feedback.textContent = '';
+
+      if (!authForm.reportValidity()) return;
+      button.disabled = true;
+      button.textContent = authMode === 'signup' ? 'Creating account…' : 'Signing in…';
+      try {
+        const accounts = readAccounts();
+        if (authMode === 'signup') {
+          const name = document.getElementById('fullName').value.trim();
+          const phone = document.getElementById('phone').value.trim();
+          const confirmPassword = document.getElementById('confirmPassword').value;
+          if (!name || !phone) throw new Error('Enter your name and phone number to create an account.');
+          if (password.length < 8) throw new Error('Use a password with at least 8 characters.');
+          if (password !== confirmPassword) throw new Error('The passwords do not match.');
+          if (accounts.some((account) => account.email === email)) throw new Error('An account with this email already exists. Please sign in.');
+          const credential = await hashPassword(password);
+          const account = { name, email, phone, ...credential };
+          accounts.push(account);
+          localStorage.setItem('medease_accounts', JSON.stringify(accounts));
+          startSession(account);
+        } else {
+          const account = accounts.find((saved) => saved.email === email);
+          const credential = account ? await hashPassword(password, account.salt) : null;
+          if (!account || account.passwordHash !== credential.passwordHash) throw new Error('We could not find a matching account. Check your details or create an account.');
+          startSession(account);
+        }
+      } catch (error) {
+        feedback.textContent = error.message || 'We could not complete that request. Please try again.';
+      } finally {
+        button.disabled = false;
+        button.textContent = authMode === 'signup' ? 'Create account' : 'Sign in';
+      }
+    });
+
+    setAuthMode(authMode);
+  </script>
+</body>
+</html>
